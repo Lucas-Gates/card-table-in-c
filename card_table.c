@@ -32,12 +32,11 @@ int main() {
 
 void create_deck(int new_deck[52][2]) {
     char suits[4] = {'H', 'D', 'C', 'S'};
-    for (int i = 0; i < 52; i++) {
-        new_deck[i][0] = (i % 13) + 1;
-    }
-    for (int j = 0; j < 13; j++) {
-        for (int k = 0; k < 4; k++) {
-            new_deck[((j+1)*(k+1))- 1][1] = suits[k];
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+            int current_iteration = (i*13) + j;
+            new_deck[current_iteration][0] = (current_iteration % 13) + 1;
+            new_deck[current_iteration][1] = suits[i];
         }
     }
 }
