@@ -41,15 +41,16 @@ int main() {
 
     int player_wins = 0;
     int opponent_wins = 0;
-    int counter = 0;
+    int current_player_card[2];
+    int current_opponent_card[2];
     int player_collected_cards[52];
     int opponent_collected_cards[52];
 
     //start war
     while (1) {
         printf("\n");
-        int current_player_card[2] = {player_hand[counter][0], player_hand[counter][1]};
-        int current_opponent_card[2] = {opponent_hand[counter][0], opponent_hand[counter][1]};
+        current_player_card[2] = {player_hand[0][0], player_hand[0][1]};
+        current_opponent_card[2] = {opponent_hand[0][0], opponent_hand[0][1]};
         printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
         printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
         if (current_player_card[0] > current_opponent_card[0]) {
