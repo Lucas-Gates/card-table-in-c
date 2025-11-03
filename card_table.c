@@ -8,6 +8,7 @@ void print_deck(int deck[52][2]);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
 void shuffle_deck(int deck[52][2]);
+void split_deck(int original_deck[52][2], int deck1[26][2], int deck2[26][2]);
 
 int main() {
     srand(time(NULL));
@@ -33,6 +34,25 @@ int main() {
     print_deck(first_deck);
     shuffle_deck(first_deck);
     print_deck(first_deck);
+    int player_hand[26][2];
+    int opponent_hand[26][2];
+    split_deck(first_deck, player_hand, opponent_hand);
+
+    int player_wins = 0;
+    int opponent_wins = 0;
+
+    for (int i = 0; i < 26; i++) {
+        printf("\n");
+        printf("Player's card: %d of %d\nOpponent's card: %d of %d\n", player_hand[i][0], player_hand[i][1], opponent_hand[i][0], opponent_hand[i][1]);
+        printf("%s wins!\n",player_hand[i][0] > opponent_hand[i][0] ? "Player" : "Opponent"); 
+        if (player_hand[i][0] > opponent_hand[i][0]) {
+            player_wins++;
+        } else {
+            opponent_wins++;
+        }
+    }
+    printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
+    printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");
 
     return 0;
 }
@@ -71,6 +91,8 @@ char number_to_character_for_deck(int num) {
             return 'Q';
         case 13:
             return 'K';
+        default:
+            return num;
     }
 }
 
@@ -84,6 +106,8 @@ char number_to_suit(int num) {
             return 'C';
         case 3:
             return 'S';
+        default:
+            return num;
     }
 }
 
@@ -102,5 +126,14 @@ void shuffle_deck(int deck[52][2]) {
         } while (deck[random_num][0] != -1);
         deck[random_num][0] = copy_deck[k][0];
         deck[random_num][1] = copy_deck[k][1];
+    }
+}
+
+void split_deck(int original_deck[52][2], int deck1[26][2], int deck2[26][2]) {
+    for (int i = 0; i < 26; i++) {
+        deck1[i][0] = original_deck[i][0];
+        deck1[i][1] = original_deck[i][1];
+        deck2[i][0] = original_deck[51-i][0];
+        deck2[i][1] = original_deck[51-i][1];
     }
 }
