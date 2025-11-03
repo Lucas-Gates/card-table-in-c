@@ -58,11 +58,11 @@ int main() {
 }
 
 void create_deck(int new_deck[52][2]) {
-    int suits[4] = {0, 1, 2, 3};
+    int suits[4] = {0, 1, 2, 3}; //hearts, diamonds, clubs, spades
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 13; j++) {
-            int current_iteration = (i*13) + j;
-            new_deck[current_iteration][0] = (current_iteration % 13) + 1;
+            int current_iteration = (i*13) + j; //current iteration out of 52
+            new_deck[current_iteration][0] = (current_iteration % 13) + 1; //only using numbers 1 through 13
             new_deck[current_iteration][1] = suits[i];
         }
     }
@@ -71,17 +71,17 @@ void create_deck(int new_deck[52][2]) {
 void print_deck(int deck[52][2]) {
     printf("Current deck: \n");
     int current_card;
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 52; i++) { //looping through every card
         current_card = deck[i][0];
-        if (current_card == 1 || current_card >= 11) {
-            printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1]));
+        if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
+            printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
         } else {
             printf("Card #%d: %d of %c\n", i + 1, deck[i][0], number_to_suit(deck[i][1]));
         }
     }
 }
 
-char number_to_character_for_deck(int num) {
+char number_to_character_for_deck(int num) { //tranlator for the suits
     switch (num) {
         case 1:
             return 'A';
@@ -96,7 +96,7 @@ char number_to_character_for_deck(int num) {
     }
 }
 
-char number_to_suit(int num) {
+char number_to_suit(int num) { //tranlator for the values
     switch(num) {
         case 0:
             return 'H';
@@ -115,15 +115,15 @@ void shuffle_deck(int deck[52][2]) {
     int copy_deck[52][2];
     for (int i = 0; i < 52; i++) {
         for (int j = 0; j < 2; j++) {
-            copy_deck[i][j] = deck[i][j];
-            deck[i][j] = -1;
+            copy_deck[i][j] = deck[i][j]; //creating an exact copy of the deck array
+            deck[i][j] = -1; //filling the original deck array with only -1
         }
     }
     int random_num = 0;
     for (int k = 0; k < 52; k++) {
         do {
             random_num = rand() % 52;
-        } while (deck[random_num][0] != -1);
+        } while (deck[random_num][0] != -1); //keeps looping until it finds a spot in the deck array filled with a -1
         deck[random_num][0] = copy_deck[k][0];
         deck[random_num][1] = copy_deck[k][1];
     }
