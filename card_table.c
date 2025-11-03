@@ -8,7 +8,8 @@ void print_deck(int deck[52][2]);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
 void shuffle_deck(int deck[52][2]);
-void split_deck(int original_deck[52][2], int deck1[26][2], int deck2[26][2]);
+void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]);
+void move_cards_up_in_hand(int hand[52][2]);
 
 int main() {
     srand(time(NULL));
@@ -149,4 +150,13 @@ void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]) {
         deck2[51-i][0] = -1;
         deck2[51-i][1] = -1;
     }
+}
+
+void move_cards_up_in_hand(int hand[52][2]) { //assuming every empty spot in a hand is filled with -1
+    for (int i = 0; i < 51; i++) {
+        hand[i][0] = hand[i+1][0];
+        hand[i][1] = hand[i+1][1];
+    }
+    hand[51][0] = -1;
+    hand[51][1] = -1;
 }
