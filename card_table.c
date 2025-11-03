@@ -34,20 +34,28 @@ int main() {
     print_deck(first_deck);
     shuffle_deck(first_deck);
     print_deck(first_deck);
-    int player_hand[26][2];
-    int opponent_hand[26][2];
+    int player_hand[52][2];
+    int opponent_hand[52][2];
     split_deck(first_deck, player_hand, opponent_hand);
 
     int player_wins = 0;
     int opponent_wins = 0;
+    int counter = 0;
+    int player_collected_cards[52];
+    int opponent_collected_cards[52];
 
-    for (int i = 0; i < 26; i++) {
+    //start war
+    while (1) {
         printf("\n");
-        printf("Player's card: %d of %d\nOpponent's card: %d of %d\n", player_hand[i][0], player_hand[i][1], opponent_hand[i][0], opponent_hand[i][1]);
-        printf("%s wins!\n",player_hand[i][0] > opponent_hand[i][0] ? "Player" : "Opponent"); 
-        if (player_hand[i][0] > opponent_hand[i][0]) {
+        int current_player_card[2] = {player_hand[counter][0], player_hand[counter][1]};
+        int current_opponent_card[2] = {opponent_hand[counter][0], opponent_hand[counter][1]};
+        printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
+        printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
+        if (current_player_card[0] > current_opponent_card[0]) {
+            printf("Player wins!\n");
             player_wins++;
         } else {
+            printf("Opponent wins!\n");
             opponent_wins++;
         }
     }
@@ -129,11 +137,16 @@ void shuffle_deck(int deck[52][2]) {
     }
 }
 
-void split_deck(int original_deck[52][2], int deck1[26][2], int deck2[26][2]) {
+void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]) {
     for (int i = 0; i < 26; i++) {
         deck1[i][0] = original_deck[i][0];
         deck1[i][1] = original_deck[i][1];
         deck2[i][0] = original_deck[51-i][0];
         deck2[i][1] = original_deck[51-i][1];
+
+        deck1[51-i][0] = -1;
+        deck1[51-i][1] = -1;
+        deck2[51-i][0] = -1;
+        deck2[51-i][1] = -1;
     }
 }
