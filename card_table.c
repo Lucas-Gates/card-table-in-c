@@ -12,6 +12,7 @@ void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]);
 void move_cards_up_in_hand(int hand[52][2]);
 int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]);
 int check_amount_of_cards(int hand[52][2]);
+int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]);
 
 int main() {
     srand(time(NULL));
@@ -206,6 +207,21 @@ int check_amount_of_cards(int hand[52][2]) {
     for (int i = 0; i < 52; i++) {
         if (hand[i][0] == -1) {
             return i;
+        }
+    }
+}
+
+int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]) {
+    int player_won = 0;
+
+    for (int i = 0; i < 3; i++) {
+        if (player_hand[i+1][0] != -1) {
+            prize_cards[i][0] = player_hand[i][0];
+            prize_cards[i][1] = player_hand[i][1];
+        }
+        if (opponent_hand[i+1][0] != -1) {
+            prize_cards[i][0] = opponent_hand[i][0];
+            prize_cards[i][1] = opponent_hand[i][1];
         }
     }
 }
