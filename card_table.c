@@ -11,6 +11,7 @@ void shuffle_deck(int deck[52][2]);
 void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]);
 void move_cards_up_in_hand(int hand[52][2]);
 int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]);
+int check_amount_of_cards(int hand[52][2]);
 
 int main() {
     srand(time(NULL));
@@ -44,16 +45,12 @@ int main() {
     int opponent_wins = 0;
     int cards_won[2][2];
     int player_won = 0;
-    int current_player_card[2] = {player_hand[0][0], player_hand[0][1]};
-    int current_opponent_card[2] = {opponent_hand[0][0], opponent_hand[0][1]};
-    int done = 0;
+    int current_player_card[2];
+    int current_opponent_card[2];
 
     //start war
-    while (!done) {
+    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand))) {
         printf("\n");
-        if (current_player_card[0] == -1 || current_opponent_card[0] == -1) {
-            done = 1;
-        }
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
         current_opponent_card[0] = opponent_hand[0][0];
@@ -67,7 +64,10 @@ int main() {
         } else {
             player_won = 0;
         }
-
+        player_hand[0][0] = -1;
+        player_hand[0][1] = -1;
+        opponent_hand[0][0] = -1;
+        opponent_hand[0][1] = -1;
         move_cards_up_in_hand(player_hand);
         move_cards_up_in_hand(opponent_hand);
         cards_won[0][0] = current_player_card[0];
@@ -75,7 +75,7 @@ int main() {
         cards_won[1][0] = current_opponent_card[0];
         cards_won[1][1] = current_opponent_card[1];
 
-        if (current_player_card[0] > current_opponent_card[0]) {
+        if (player_won) {
             printf("Player wins!\n");
             add_cards_to_hand(player_hand, cards_won);
             player_wins++;
@@ -184,6 +184,7 @@ void move_cards_up_in_hand(int hand[52][2]) { //assuming every empty spot in a h
     }
     hand[51][0] = -1;
     hand[51][1] = -1;
+    //print_deck(hand);
 }
 
 int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]) {
@@ -197,6 +198,14 @@ int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]) {
             hand[i][1] = cards_to_add[cards_added][1];
             cards_added++;
 
+        }
+    }
+}
+
+int check_amount_of_cards(int hand[52][2]) {
+    for (int i = 0; i < 52; i++) {
+        if (hand[i][0] == -1) {
+            return i;
         }
     }
 }
