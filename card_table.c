@@ -58,12 +58,15 @@ int main() {
         current_opponent_card[1] = opponent_hand[0][1];
         printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
         printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
+        int prize_cards[6][2];
 
         if (current_player_card[0] > current_opponent_card[0]) {
             player_won = 1;
             //print_deck(player_hand);
-        } else {
+        } else if (current_player_card[0] < current_opponent_card[0]){
             player_won = 0;
+        } else {
+            war_tie(player_hand, opponent_hand, prize_cards);
         }
         player_hand[0][0] = -1;
         player_hand[0][1] = -1;
@@ -213,15 +216,37 @@ int check_amount_of_cards(int hand[52][2]) {
 
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]) {
     int player_won = 0;
+    int cards_not_filled = 0;
 
     for (int i = 0; i < 3; i++) {
-        if (player_hand[i+1][0] != -1) {
-            prize_cards[i][0] = player_hand[i][0];
-            prize_cards[i][1] = player_hand[i][1];
+        if (player_hand[1][0] != -1) {
+            prize_cards[0][0] = player_hand[0][0];
+            prize_cards[0][1] = player_hand[0][1];
+            move_cards_up_in_hand(player_hand);
+        } else {
+            cards_not_filled++;
         }
         if (opponent_hand[i+1][0] != -1) {
             prize_cards[i][0] = opponent_hand[i][0];
             prize_cards[i][1] = opponent_hand[i][1];
+            move_cards_up_in_hand(opponent_hand);
+        } else {
+            cards_not_filled++;
         }
     }
+
+    for (int j = 0; j < cards_not_filled; j++) {
+        prize_cards[5-j][0] = -1;
+        prize_cards[5-j][1] = -1;
+    }
+
+    int prize_cards2[6][2];
+    if (player_hand[0][0] > opponent_hand[0][0]) {
+        player_won = 1;
+    } else if (player_hand[0][0] < opponent_hand[0][0]) {
+        player_won = 0;
+    } else {
+        war_tie(player_hand, opponent_hand, prize_cards2);
+    }
+    return player_won;
 }
