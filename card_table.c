@@ -4,7 +4,7 @@
 
 //function prototypes
 void create_deck(int new_deck[52][2]);
-void print_deck(int deck[52][2]);
+void print_deck(int deck[][2], int deck_size);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
 void shuffle_deck(int deck[52][2]);
@@ -35,9 +35,9 @@ int main() {
 
     int first_deck[52][2];
     create_deck(first_deck);
-    print_deck(first_deck);
+    print_deck(first_deck, 52);
     shuffle_deck(first_deck);
-    print_deck(first_deck);
+    print_deck(first_deck, 52);
     int player_hand[52][2];
     int opponent_hand[52][2];
     split_deck(first_deck, player_hand, opponent_hand);
@@ -48,9 +48,10 @@ int main() {
     int player_won = 0;
     int current_player_card[2];
     int current_opponent_card[2];
+    int turns = 0;
 
     //start war
-    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand))) {
+    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < 1000)) {
         printf("\n");
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
@@ -88,7 +89,7 @@ int main() {
             add_cards_to_hand(opponent_hand, cards_won);
             opponent_wins++;
         }
-
+        turns++;
     }
     printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
     printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");
@@ -106,10 +107,9 @@ void create_deck(int new_deck[52][2]) {
     }
 }
 
-void print_deck(int deck[52][2]) {
-    printf("Current deck: \n");
+void print_deck(int deck[][2], int deck_size) {
     int current_card;
-    for (int i = 0; i < 52; i++) { //looping through every card
+    for (int i = 0; i < deck_size; i++) { //looping through every card
         current_card = deck[i][0];
         if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
             printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
