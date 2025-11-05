@@ -13,6 +13,7 @@ void move_cards_up_in_hand(int hand[52][2]);
 int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]);
 int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]);
+void war(int deck[52][2]);
 
 int main() {
     srand(time(NULL));
@@ -38,61 +39,9 @@ int main() {
     print_deck(first_deck, 52);
     shuffle_deck(first_deck);
     print_deck(first_deck, 52);
-    int player_hand[52][2];
-    int opponent_hand[52][2];
-    split_deck(first_deck, player_hand, opponent_hand);
-
-    int player_wins = 0;
-    int opponent_wins = 0;
-    int cards_won[2][2];
-    int player_won = 0;
-    int current_player_card[2];
-    int current_opponent_card[2];
-    int turns = 0;
 
     //start war
-    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < 1000)) {
-        printf("\n");
-        current_player_card[0] = player_hand[0][0];
-        current_player_card[1] = player_hand[0][1];
-        current_opponent_card[0] = opponent_hand[0][0];
-        current_opponent_card[1] = opponent_hand[0][1];
-        printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
-        printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
-        int prize_cards[6][2];
-
-        if (current_player_card[0] > current_opponent_card[0]) {
-            player_won = 1;
-            //print_deck(player_hand);
-        } else if (current_player_card[0] < current_opponent_card[0]){
-            player_won = 0;
-        } else {
-            war_tie(player_hand, opponent_hand, prize_cards);
-        }
-        player_hand[0][0] = -1;
-        player_hand[0][1] = -1;
-        opponent_hand[0][0] = -1;
-        opponent_hand[0][1] = -1;
-        move_cards_up_in_hand(player_hand);
-        move_cards_up_in_hand(opponent_hand);
-        cards_won[0][0] = current_player_card[0];
-        cards_won[0][1] = current_player_card[1];
-        cards_won[1][0] = current_opponent_card[0];
-        cards_won[1][1] = current_opponent_card[1];
-
-        if (player_won) {
-            printf("Player wins!\n");
-            add_cards_to_hand(player_hand, cards_won);
-            player_wins++;
-        } else {
-            printf("Opponent wins!\n");
-            add_cards_to_hand(opponent_hand, cards_won);
-            opponent_wins++;
-        }
-        turns++;
-    }
-    printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
-    printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");
+    war(first_deck);
     return 0;
 }
 
@@ -249,4 +198,61 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6]
         war_tie(player_hand, opponent_hand, prize_cards2);
     }
     return player_won;
+}
+
+void war(int deck[52][2]) {
+    int player_hand[52][2];
+    int opponent_hand[52][2];
+    int player_wins = 0;
+    int opponent_wins = 0;
+    int cards_won[2][2];
+    int player_won = 0;
+    int current_player_card[2];
+    int current_opponent_card[2];
+    int turns = 0;    
+
+    split_deck(deck, player_hand, opponent_hand);
+
+    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < 1000)) {
+        printf("\n");
+        current_player_card[0] = player_hand[0][0];
+        current_player_card[1] = player_hand[0][1];
+        current_opponent_card[0] = opponent_hand[0][0];
+        current_opponent_card[1] = opponent_hand[0][1];
+        printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
+        printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
+        int prize_cards[6][2];
+
+        if (current_player_card[0] > current_opponent_card[0]) {
+            player_won = 1;
+        } else if (current_player_card[0] < current_opponent_card[0]){
+            player_won = 0;
+        } else {
+            war_tie(player_hand, opponent_hand, prize_cards);
+        }
+        player_hand[0][0] = -1;
+        player_hand[0][1] = -1;
+        opponent_hand[0][0] = -1;
+        opponent_hand[0][1] = -1;
+        move_cards_up_in_hand(player_hand);
+        move_cards_up_in_hand(opponent_hand);
+        cards_won[0][0] = current_player_card[0];
+        cards_won[0][1] = current_player_card[1];
+        cards_won[1][0] = current_opponent_card[0];
+        cards_won[1][1] = current_opponent_card[1];
+
+        if (player_won) {
+            printf("Player wins!\n");
+            add_cards_to_hand(player_hand, cards_won);
+            player_wins++;
+        } else {
+            printf("Opponent wins!\n");
+            add_cards_to_hand(opponent_hand, cards_won);
+            opponent_wins++;
+        }
+        turns++;
+    }
+
+    printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
+    printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");    
 }
