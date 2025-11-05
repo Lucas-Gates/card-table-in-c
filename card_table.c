@@ -13,36 +13,46 @@ void move_cards_up_in_hand(int hand[52][2]);
 int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]);
 int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]);
-void war(int deck[52][2]);
+void war(int deck[52][2], int max_turns);
 
 int main() {
     srand(time(NULL));
     printf("Welcome to the Card Table!\n");
     int choice;
     int game_selected = 0;
-    do {
-        printf("What game do you want to play?\n");
-        printf("[1] War\n");
-        scanf("%d", &choice);
-        switch(choice) {
-            case 1:
-                game_selected = 1;
-                break;
-            default:
-                printf("Invalid input; try again.\n");
-                break;
-        }
-    } while (!(game_selected));
 
-    int first_deck[52][2];
-    create_deck(first_deck);
-    print_deck(first_deck, 52);
-    shuffle_deck(first_deck);
-    print_deck(first_deck, 52);
+    while (1) {
+        do {
+            printf("What game do you want to play?\n");
+            printf("[1] War\n");
+            printf("[0] Quit\n");
+            scanf("%d", &choice);
+            switch(choice) {
+                case 1:
+                    game_selected = 1;
+                    break;
+                case 0:
+                    printf("Thanks for playing!\n");
+                    return 0;
+                default:
+                    printf("Invalid input; try again.\n");
+                    break;
+            }
+        } while (!game_selected);
 
-    //start war
-    war(first_deck);
-    return 0;
+        int first_deck[52][2];
+        create_deck(first_deck);
+        print_deck(first_deck, 52);
+        shuffle_deck(first_deck);
+        print_deck(first_deck, 52);
+        int turns = 1000;
+
+        printf("What would you like the turn limit to be?\n");
+        scanf("%d", &turns);
+        //start war
+        war(first_deck, turns);
+        printf("\n");
+    }
 }
 
 void create_deck(int new_deck[52][2]) {
@@ -155,7 +165,7 @@ int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]) {
     }
 }
 
-int check_amount_of_cards(int hand[52][2]) {
+int check_amount_of_cards(int hand[52][2]) { //assumes the hand is sorted
     for (int i = 0; i < 52; i++) {
         if (hand[i][0] == -1) {
             return i;
@@ -200,7 +210,7 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6]
     return player_won;
 }
 
-void war(int deck[52][2]) {
+void war(int deck[52][2], int max_turns) {
     int player_hand[52][2];
     int opponent_hand[52][2];
     int player_wins = 0;
@@ -213,7 +223,7 @@ void war(int deck[52][2]) {
 
     split_deck(deck, player_hand, opponent_hand);
 
-    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < 1000)) {
+    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < max_turns)) {
         printf("\n");
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
