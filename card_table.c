@@ -220,8 +220,13 @@ void war(int deck[52][2], int max_turns) {
     int current_player_card[2];
     int current_opponent_card[2];
     int turns = 0;    
+    int manual_mode = 0;
 
     split_deck(deck, player_hand, opponent_hand);
+
+    printf("Would you like automatic or manual mode?\n[1] Auto\n[2] Manual\n");
+    scanf("%d", &manual_mode);
+    manual_mode--;
 
     while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < max_turns)) {
         printf("\n");
@@ -261,6 +266,15 @@ void war(int deck[52][2], int max_turns) {
             opponent_wins++;
         }
         turns++;
+
+        if (manual_mode) {
+            printf("\n");
+            printf("Enter 1 to continue or 2 to exit manual mode: ");
+            scanf("%d", &manual_mode);
+            if (manual_mode == 2) {
+                manual_mode -= 2;
+            }
+        }
     }
 
     printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
