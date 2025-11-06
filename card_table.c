@@ -42,9 +42,7 @@ int main() {
 
         int first_deck[52][2];
         create_deck(first_deck);
-        print_deck(first_deck, 52);
         shuffle_deck(first_deck);
-        print_deck(first_deck, 52);
         int turns = 1000;
 
         printf("What would you like the turn limit to be?\n");
@@ -221,6 +219,8 @@ void war(int deck[52][2], int max_turns) {
     int current_opponent_card[2];
     int turns = 0;    
     int manual_mode = 0;
+    int player_cards_left = 26;
+    int opponent_cards_left = 26;
 
     split_deck(deck, player_hand, opponent_hand);
 
@@ -228,8 +228,8 @@ void war(int deck[52][2], int max_turns) {
     scanf("%d", &manual_mode);
     manual_mode--;
 
-    while ((check_amount_of_cards(player_hand)) && (check_amount_of_cards(opponent_hand)) && (turns < max_turns)) {
-        printf("\n");
+    while (player_cards_left && opponent_cards_left && (turns < max_turns)) {
+        printf("\nTurn %d\n", turns + 1);
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
         current_opponent_card[0] = opponent_hand[0][0];
@@ -245,6 +245,7 @@ void war(int deck[52][2], int max_turns) {
         } else {
             war_tie(player_hand, opponent_hand, prize_cards);
         }
+
         player_hand[0][0] = -1;
         player_hand[0][1] = -1;
         opponent_hand[0][0] = -1;
@@ -265,6 +266,9 @@ void war(int deck[52][2], int max_turns) {
             add_cards_to_hand(opponent_hand, cards_won);
             opponent_wins++;
         }
+        player_cards_left = check_amount_of_cards(player_hand);
+        opponent_cards_left = check_amount_of_cards(opponent_hand);
+        printf("Player has %d card%s; Opponent has %d card%s.\n", player_cards_left, player_cards_left > 1 ? "s" : "", opponent_cards_left, opponent_cards_left > 1 ? "s" : "");
         turns++;
 
         if (manual_mode) {
