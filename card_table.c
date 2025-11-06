@@ -10,9 +10,9 @@ char number_to_suit(int num);
 void shuffle_deck(int deck[52][2]);
 void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]);
 void move_cards_up_in_hand(int hand[52][2]);
-int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]);
+int add_cards_to_hand(int hand[52][2], int cards_to_add[][2], int amount_to_add);
 int check_amount_of_cards(int hand[52][2]);
-int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]);
+int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]);
 void war(int deck[52][2], int max_turns);
 
 int main() {
@@ -148,10 +148,10 @@ void move_cards_up_in_hand(int hand[52][2]) { //assuming every empty spot in a h
     //print_deck(hand);
 }
 
-int add_cards_to_hand(int hand[52][2], int cards_to_add[2][2]) {
+int add_cards_to_hand(int hand[52][2], int cards_to_add[][2], int amount_to_add) {
     int cards_added = 0;
     for (int i = 0; i < 52; i++) {
-        if (cards_added == 2) {
+        if (cards_added == amount_to_add) {
             return 0;
         }
         if (hand[i][0] == -1) {
@@ -171,11 +171,11 @@ int check_amount_of_cards(int hand[52][2]) { //assumes the hand is sorted
     }
 }
 
-int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6][2]) {
+int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]) {
     int player_won = 0;
     int cards_not_filled = 0;
-
-    for (int i = 0; i < 3; i++) {
+    
+    for (int i = 0; i < 4; i++) {
         if (player_hand[1][0] != -1) {
             prize_cards[0][0] = player_hand[0][0];
             prize_cards[0][1] = player_hand[0][1];
@@ -183,7 +183,7 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6]
         } else {
             cards_not_filled++;
         }
-        if (opponent_hand[i+1][0] != -1) {
+        if (opponent_hand[1][0] != -1) {
             prize_cards[i][0] = opponent_hand[i][0];
             prize_cards[i][1] = opponent_hand[i][1];
             move_cards_up_in_hand(opponent_hand);
@@ -193,18 +193,23 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[6]
     }
 
     for (int j = 0; j < cards_not_filled; j++) {
-        prize_cards[5-j][0] = -1;
-        prize_cards[5-j][1] = -1;
+        prize_cards[7-j][0] = -1;
+        prize_cards[7-j][1] = -1;
     }
 
-    int prize_cards2[6][2];
+    int prize_cards2[8][2];
     if (player_hand[0][0] > opponent_hand[0][0]) {
         player_won = 1;
+        add_cards_to_hand(player_hand, prize_cards, 8 - cards_not_filled);
     } else if (player_hand[0][0] < opponent_hand[0][0]) {
         player_won = 0;
+        add_cards_to_hand(opponent_hand, prize_cards, 8 - cards_not_filled);
     } else {
-        war_tie(player_hand, opponent_hand, prize_cards2);
+        player_won = war_tie(player_hand, opponent_hand, prize_cards2);
     }
+
+    int temp;
+    scanf("%d",&temp);
     return player_won;
 }
 
@@ -230,20 +235,24 @@ void war(int deck[52][2], int max_turns) {
 
     while (player_cards_left && opponent_cards_left && (turns < max_turns)) {
         printf("\nTurn %d\n", turns + 1);
+        printf("Player deck:\n");
+        print_deck(player_hand, 52);
+        printf("Opponent deck:\n");
+        print_deck(opponent_hand, 52);
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
         current_opponent_card[0] = opponent_hand[0][0];
         current_opponent_card[1] = opponent_hand[0][1];
         printf("Player's card: %d of %d\n", current_player_card[0], current_player_card[1]);
         printf("Opponent's card: %d of %d\n", current_opponent_card[0], current_opponent_card[1]);
-        int prize_cards[6][2];
+        int prize_cards[8][2];
 
         if (current_player_card[0] > current_opponent_card[0]) {
             player_won = 1;
         } else if (current_player_card[0] < current_opponent_card[0]){
             player_won = 0;
         } else {
-            war_tie(player_hand, opponent_hand, prize_cards);
+            player_won = war_tie(player_hand, opponent_hand, prize_cards);
         }
 
         player_hand[0][0] = -1;
@@ -259,11 +268,11 @@ void war(int deck[52][2], int max_turns) {
 
         if (player_won) {
             printf("Player wins!\n");
-            add_cards_to_hand(player_hand, cards_won);
+            add_cards_to_hand(player_hand, cards_won, 2);
             player_wins++;
         } else {
             printf("Opponent wins!\n");
-            add_cards_to_hand(opponent_hand, cards_won);
+            add_cards_to_hand(opponent_hand, cards_won, 2);
             opponent_wins++;
         }
         player_cards_left = check_amount_of_cards(player_hand);
