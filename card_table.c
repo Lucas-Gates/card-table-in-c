@@ -169,6 +169,7 @@ int check_amount_of_cards(int hand[52][2]) { //assumes the hand is sorted
             return i;
         }
     }
+    return 52;
 }
 
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]) {
@@ -210,8 +211,6 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
         player_won = war_tie(player_hand, opponent_hand, prize_cards2);
     }
 
-    int temp;
-    scanf("%d",&temp);
     return player_won;
 }
 
@@ -237,10 +236,6 @@ void war(int deck[52][2], int max_turns) {
 
     while (player_cards_left && opponent_cards_left && (turns < max_turns)) {
         printf("\nTurn %d\n", turns + 1);
-        printf("Player deck:\n");
-        print_deck(player_hand, 52);
-        printf("Opponent deck:\n");
-        print_deck(opponent_hand, 52);
         current_player_card[0] = player_hand[0][0];
         current_player_card[1] = player_hand[0][1];
         current_opponent_card[0] = opponent_hand[0][0];
@@ -279,7 +274,8 @@ void war(int deck[52][2], int max_turns) {
         }
         player_cards_left = check_amount_of_cards(player_hand);
         opponent_cards_left = check_amount_of_cards(opponent_hand);
-        printf("Player has %d card%s; Opponent has %d card%s.\n", player_cards_left, player_cards_left > 1 ? "s" : "", opponent_cards_left, opponent_cards_left > 1 ? "s" : "");
+        printf("Player has %d card%s; Opponent has %d card%s.\n", player_cards_left, (player_cards_left > 1 || player_cards_left == 0) ? "s" : "", 
+            opponent_cards_left, (opponent_cards_left > 1 || opponent_cards_left == 0) ? "s" : "");
         turns++;
 
         if (manual_mode) {
