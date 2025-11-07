@@ -179,6 +179,9 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
     int prizes = 8;
     int lowest_cards = 5;
 
+    printf("It's a War!\n");
+    printf("Player's prize cards:\n");
+
     if (player_amount_of_cards < 5 || opponent_amount_of_cards < 5) {
         if (player_amount_of_cards > opponent_amount_of_cards) {
             lowest_cards = opponent_amount_of_cards;
@@ -190,22 +193,32 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
 
     for (int i = 0; i < prizes; i++) {
         if (i < (prizes / 2)) {
+            printf("%d of %d\n", player_hand[0][0], player_hand[0][1]);
             prize_cards[i][0] = player_hand[0][0];
             prize_cards[i][1] = player_hand[0][1];
             move_cards_up_in_hand(player_hand);
         } else {
+            if (i == (prizes / 2)) {
+                printf("Opponent's prize cards:\n");
+            }
+            printf("%d of %d\n", opponent_hand[0][0], opponent_hand[0][1]);
             prize_cards[i][0] = opponent_hand[0][0];
             prize_cards[i][1] = opponent_hand[0][1];
             move_cards_up_in_hand(opponent_hand);
         }
     }
 
+    printf("Player's card: %d of %d\n", player_hand[0][0], player_hand[0][1]);
+    printf("Opponent's card: %d of %d\n", opponent_hand[0][0], opponent_hand[0][1]);    
+
     int prize_cards2[8][2];
     if (player_hand[0][0] > opponent_hand[0][0]) {
         player_won = 1;
+        printf("Player Wins\n");
         add_cards_to_hand(player_hand, prize_cards, prizes);
     } else if (player_hand[0][0] < opponent_hand[0][0]) {
         player_won = 0;
+        printf("Opponent Wins\n");
         add_cards_to_hand(opponent_hand, prize_cards, prizes);
     } else {
         player_won = war_tie(player_hand, opponent_hand, prize_cards2);
