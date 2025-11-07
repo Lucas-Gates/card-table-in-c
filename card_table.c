@@ -14,6 +14,8 @@ int add_cards_to_hand(int hand[52][2], int cards_to_add[][2], int amount_to_add)
 int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]);
 void war(int deck[52][2], int max_turns);
+void memory(int deck[52][2]);
+void memory_print(int deck[52][2], int card_to_flip[2]);
 
 int main() {
     srand(time(NULL));
@@ -303,4 +305,24 @@ void war(int deck[52][2], int max_turns) {
 
     printf("\nPlayer wins: %d\nOpponent wins: %d\n", player_wins, opponent_wins);
     printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");    
+}
+
+void memory(int deck[52][2]) {
+    printf("Welcome to Memory!\n");
+    int card_to_flip[2] = {5, 0};
+    memory_print(deck, card_to_flip);
+    
+}
+
+void memory_print(int deck[52][2], int card_to_flip[2]) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (deck[i][j] == deck[card_to_flip[0]][card_to_flip[1]]) {
+                printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
+            } else {
+                printf("[] ");
+            }
+        }
+        printf("\n");
+    }
 }
