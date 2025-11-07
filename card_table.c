@@ -173,37 +173,39 @@ int check_amount_of_cards(int hand[52][2]) { //assumes the hand is sorted
 
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]) {
     int player_won = 0;
-    int cards_not_filled = 0;
-    
-    for (int i = 0; i < 4; i++) {
-        if (player_hand[1][0] != -1) {
-            prize_cards[0][0] = player_hand[0][0];
-            prize_cards[0][1] = player_hand[0][1];
-            move_cards_up_in_hand(player_hand);
+    int player_amount_of_cards = check_amount_of_cards(player_hand);
+    int opponent_amount_of_cards = check_amount_of_cards(opponent_hand);
+    int prizes = 8;
+    int lowest_cards = 5;
+
+    if (player_amount_of_cards < 5 || opponent_amount_of_cards < 5) {
+        if (player_amount_of_cards > opponent_amount_of_cards) {
+            lowest_cards = opponent_amount_of_cards;
         } else {
-            cards_not_filled++;
+            lowest_cards = player_amount_of_cards;
         }
-        if (opponent_hand[1][0] != -1) {
-            prize_cards[i][0] = opponent_hand[i][0];
-            prize_cards[i][1] = opponent_hand[i][1];
-            move_cards_up_in_hand(opponent_hand);
-        } else {
-            cards_not_filled++;
-        }
+        prizes = (lowest_cards -1 )* 2;
     }
 
-    for (int j = 0; j < cards_not_filled; j++) {
-        prize_cards[7-j][0] = -1;
-        prize_cards[7-j][1] = -1;
+    for (int i = 0; i < prizes; i++) {
+        if (i < (prizes / 2)) {
+            prize_cards[i][0] = player_hand[0][0];
+            prize_cards[i][1] = player_hand[0][1];
+            move_cards_up_in_hand(player_hand);
+        } else {
+            prize_cards[i][0] = opponent_hand[0][0];
+            prize_cards[i][1] = opponent_hand[0][1];
+            move_cards_up_in_hand(opponent_hand);
+        }
     }
 
     int prize_cards2[8][2];
     if (player_hand[0][0] > opponent_hand[0][0]) {
         player_won = 1;
-        add_cards_to_hand(player_hand, prize_cards, 8 - cards_not_filled);
+        add_cards_to_hand(player_hand, prize_cards, prizes);
     } else if (player_hand[0][0] < opponent_hand[0][0]) {
         player_won = 0;
-        add_cards_to_hand(opponent_hand, prize_cards, 8 - cards_not_filled);
+        add_cards_to_hand(opponent_hand, prize_cards, prizes);
     } else {
         player_won = war_tie(player_hand, opponent_hand, prize_cards2);
     }
