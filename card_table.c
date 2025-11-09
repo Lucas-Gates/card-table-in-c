@@ -15,7 +15,7 @@ int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]);
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
-void memory_print(int deck[52][2], int card_to_flip[2]);
+void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]);
 
 int main() {
     srand(time(NULL));
@@ -318,22 +318,29 @@ void war(int deck[52][2], int max_turns) {
 void memory(int deck[52][2]) {
     printf("Welcome to Memory!\n");
     int card_to_flip[2] = {-1, -1};
-    memory_print(deck, card_to_flip);
+    int card_to_flip2[2] = {-1, -1};
+    memory_print(deck, card_to_flip, card_to_flip2);
     int row;
     int col;
     while (1) {
-        printf("What row of card would you like to flip?\n");
-        scanf("%d", &row);
-        printf("What column of car would you like to flip?\n");
-        scanf("%d", &col);
-        card_to_flip[0] = row;
-        card_to_flip[1] = col;
-        memory_print(deck, card_to_flip);
+        for (int i = 0; i < 2; i++) {
+            printf("What row of card would you like to flip?\n");
+            scanf("%d", &row);
+            printf("What column of card would you like to flip?\n");
+            scanf("%d", &col);
+            if (i == 0) {
+                card_to_flip[0] = row;
+                card_to_flip[1] = col;
+            } else {
+                card_to_flip2[0] = row;
+                card_to_flip2[1] = col;
+            }
+            memory_print(deck, card_to_flip, card_to_flip2);
+        }
     }
-    
 }
 
-void memory_print(int deck[52][2], int card_to_flip[2]) {
+void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]) {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             if (card_to_flip[0] == i && card_to_flip[1] == j) {
