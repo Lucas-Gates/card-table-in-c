@@ -325,7 +325,7 @@ void memory(int deck[52][2]) {
 void memory_print(int deck[52][2], int card_to_flip[2]) {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
-            if (deck[i][j] == deck[card_to_flip[0]][card_to_flip[1]]) {
+            if (deck[i*5 + j][0] == card_to_flip[0] && deck[i*5+j][1] == card_to_flip[1]) {
                 printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
             } else {
                 printf("[] ");
