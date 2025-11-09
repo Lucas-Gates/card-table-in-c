@@ -317,8 +317,19 @@ void war(int deck[52][2], int max_turns) {
 
 void memory(int deck[52][2]) {
     printf("Welcome to Memory!\n");
-    int card_to_flip[2] = {4, 0};
+    int card_to_flip[2] = {-1, -1};
     memory_print(deck, card_to_flip);
+    int row;
+    int col;
+    while (1) {
+        printf("What row of card would you like to flip?\n");
+        scanf("%d", &row);
+        printf("What column of car would you like to flip?\n");
+        scanf("%d", &col);
+        card_to_flip[0] = row;
+        card_to_flip[1] = col;
+        memory_print(deck, card_to_flip);
+    }
     
 }
 
