@@ -27,11 +27,15 @@ int main() {
         do {
             printf("What game do you want to play?\n");
             printf("[1] War\n");
+            printf("[2] Memory\n");
             printf("[0] Quit\n");
             scanf("%d", &choice);
             switch(choice) {
                 case 1:
                     game_selected = 1;
+                    break;
+                case 2:
+                    game_selected = 2;
                     break;
                 case 0:
                     printf("Thanks for playing!\n");
@@ -45,12 +49,16 @@ int main() {
         int first_deck[52][2];
         create_deck(first_deck);
         shuffle_deck(first_deck);
-        int turns = 1000;
+        if (game_selected == 1) {
+            int turns = 1000;
+            printf("What would you like the turn limit to be?\n");
+            scanf("%d", &turns);
+            //start war
+            war(first_deck, turns);
+        } else if (game_selected == 2) {
+            memory(first_deck);
+        }
 
-        printf("What would you like the turn limit to be?\n");
-        scanf("%d", &turns);
-        //start war
-        war(first_deck, turns);
         printf("\n");
     }
 }
