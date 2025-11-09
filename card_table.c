@@ -317,7 +317,7 @@ void war(int deck[52][2], int max_turns) {
 
 void memory(int deck[52][2]) {
     printf("Welcome to Memory!\n");
-    int card_to_flip[2] = {5, 0};
+    int card_to_flip[2] = {4, 0};
     memory_print(deck, card_to_flip);
     
 }
@@ -325,7 +325,7 @@ void memory(int deck[52][2]) {
 void memory_print(int deck[52][2], int card_to_flip[2]) {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
-            if (deck[i*5 + j][0] == card_to_flip[0] && deck[i*5+j][1] == card_to_flip[1]) {
+            if (card_to_flip[0] == i && card_to_flip[1] == j) {
                 printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
             } else {
                 printf("[] ");
