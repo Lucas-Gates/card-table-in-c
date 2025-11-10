@@ -15,7 +15,8 @@ int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]);
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
-void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]);
+void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]);
+void create_memory_deck(int new_deck[25][2]);
 
 int main() {
     srand(time(NULL));
@@ -319,7 +320,9 @@ void memory(int deck[52][2]) {
     printf("Welcome to Memory!\n");
     int card_to_flip[2] = {-1, -1};
     int card_to_flip2[2] = {-1, -1};
-    memory_print(deck, card_to_flip, card_to_flip2);
+    int memory_deck[25][2];
+    create_memory_deck(memory_deck);
+    memory_print(memory_deck, card_to_flip, card_to_flip2);
     int row;
     int col;
     while (1) {
@@ -340,7 +343,7 @@ void memory(int deck[52][2]) {
     }
 }
 
-void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]) {
+void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]) {
     for (int i = 0; i < 6; i++) {
         if (i > 0) {
             printf("R%d ", i);
@@ -363,4 +366,16 @@ void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]) {
         }
         printf("\n");
     }
+}
+
+void create_memory_deck(int new_deck[25][2]) {
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 12; j++) {
+            int current_iteration = (i*12) + j; //current iteration out of 24
+            new_deck[current_iteration][0] = (current_iteration % 12) + 1; 
+            new_deck[current_iteration][1] = i + 1;
+        }
+    }    
+    new_deck[24][0] = 13;
+    new_deck[24][1] = 0;
 }
