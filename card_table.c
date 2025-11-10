@@ -324,9 +324,9 @@ void memory(int deck[52][2]) {
     int col;
     while (1) {
         for (int i = 0; i < 2; i++) {
-            printf("What row of card would you like to flip?\n");
+            printf("Card #%d row?\n", i+1);
             scanf("%d", &row);
-            printf("What column of card would you like to flip?\n");
+            printf("Card #%d column?\n", i+1);
             scanf("%d", &col);
             if (i == 0) {
                 card_to_flip[0] = row;
@@ -344,6 +344,8 @@ void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]) {
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             if (card_to_flip[0] == i && card_to_flip[1] == j) {
+                printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
+            } else if (card_to_flip2[0] == i && card_to_flip2[1] == j) {
                 printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
             } else {
                 printf("[] ");
