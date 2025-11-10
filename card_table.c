@@ -343,18 +343,18 @@ void memory(int deck[52][2]) {
 void memory_print(int deck[52][2], int card_to_flip[2], int card_to_flip2[2]) {
     for (int i = 0; i < 6; i++) {
         if (i > 0) {
-            printf("R%d ", i-1);
+            printf("R%d ", i);
         }
         for (int j = 0; j < 5; j++) {
             if (i == 0) {
                 if (j == 0) {
                     printf("   ");
                 }
-                printf("C%d ", j);
+                printf("C%d ", j+1);
             } else {
-                if (card_to_flip[0] == i && card_to_flip[1] == j) {
+                if (card_to_flip[0] == i && card_to_flip[1] == j + 1) {
                     printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
-                } else if (card_to_flip2[0] == i && card_to_flip2[1] == j) {
+                } else if (card_to_flip2[0] == i && card_to_flip2[1] == j + 1) {
                     printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
                 } else {
                     printf("[] ");
