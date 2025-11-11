@@ -17,6 +17,8 @@ void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]);
 void create_memory_deck(int new_deck[25][2]);
+void print_memory_deck(int deck[25][2]);
+void shuffle_memory_deck(int deck[25][2]);
 
 int main() {
     srand(time(NULL));
@@ -378,4 +380,34 @@ void create_memory_deck(int new_deck[25][2]) {
     }    
     new_deck[24][0] = 13;
     new_deck[24][1] = 0;
+}
+
+void print_memory_deck(int deck[25][2]) {
+    int current_card;
+    for (int i = 0; i < 25; i++) { //looping through every card
+        current_card = deck[i][0];
+        if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
+            printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
+        } else {
+            printf("Card #%d: %d of %c\n", i + 1, deck[i][0], number_to_suit(deck[i][1]));
+        }
+    }
+}
+
+void shuffle_memory_deck(int deck[25][2]) {
+    int copy_deck[52][2];
+    for (int i = 0; i < 52; i++) {
+        for (int j = 0; j < 2; j++) {
+            copy_deck[i][j] = deck[i][j]; //creating an exact copy of the deck array
+            deck[i][j] = -1; //filling the original deck array with only -1
+        }
+    }
+    int random_num = 0;
+    for (int k = 0; k < 52; k++) {
+        do {
+            random_num = rand() % 52;
+        } while (deck[random_num][0] != -1); //keeps looping until it finds a spot in the deck array filled with a -1
+        deck[random_num][0] = copy_deck[k][0];
+        deck[random_num][1] = copy_deck[k][1];
+    }
 }
