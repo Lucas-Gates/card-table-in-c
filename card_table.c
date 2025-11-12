@@ -3,7 +3,7 @@
 #include <time.h>
 
 //function prototypes
-void create_deck(int new_deck[52][2]);
+void create_deck(int new_deck[52][2], int is_normal_deck);
 void print_deck(int deck[][2], int deck_size);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
@@ -16,7 +16,7 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]);
-void create_memory_deck(int new_deck[25][2]);
+// void create_memory_deck(int new_deck[25][2]);
 void print_memory_deck(int deck[25][2]);
 void shuffle_memory_deck(int deck[25][2]);
 
@@ -50,32 +50,56 @@ int main() {
         } while (!game_selected);
 
         int first_deck[52][2];
-        create_deck(first_deck);
+        create_deck(first_deck, 1);
+        print_deck(first_deck, 52);
         shuffle_deck(first_deck);
+        print_deck(first_deck, 52);
         if (game_selected == 1) {
             int turns = 1000;
             printf("What would you like the turn limit to be?\n");
             scanf("%d", &turns);
-            //start war
-            war(first_deck, turns);
+            // war(first_deck, turns);
         } else if (game_selected == 2) {
-            memory(first_deck);
+            // memory(first_deck);
         }
 
         printf("\n");
     }
 }
 
-void create_deck(int new_deck[52][2]) {
-    int suits[4] = {0, 1, 2, 3}; //hearts, diamonds, clubs, spades
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 13; j++) {
-            int current_iteration = (i*13) + j; //current iteration out of 52
-            new_deck[current_iteration][0] = (current_iteration % 13) + 1; //only using numbers 1 through 13
+void create_deck(int new_deck[][2], int is_normal_deck) { //new_deck is pointer to new_deck[0][0]
+    int suits[4] = {1, 2, 3, 4}; //hearts, diamonds, clubs, spades
+    int num_of_suits;
+    int num_of_unique_cards;
+
+    if (is_normal_deck) {
+        num_of_suits = 4;
+        num_of_unique_cards = 13;
+    } else {
+        num_of_suits = 2;
+        num_of_unique_cards = 12;        
+    }
+
+    for (int i = 0; i < num_of_suits; i++) {
+        for (int j = 0; j < num_of_unique_cards; j++) {
+            int current_iteration = (i*num_of_unique_cards) + j; //current iteration
+            new_deck[current_iteration][0] = (current_iteration % num_of_unique_cards) + 1; //only using numbers 1 through 13
             new_deck[current_iteration][1] = suits[i];
         }
     }
 }
+
+// void create_memory_deck(int new_deck[25][2]) {
+//     for (int i = 0; i < 2; i++) {
+//         for (int j = 0; j < 12; j++) {
+//             int current_iteration = (i*12) + j; //current iteration out of 24
+//             new_deck[current_iteration][0] = (current_iteration % 12) + 1; 
+//             new_deck[current_iteration][1] = i + 1;
+//         }
+//     }    
+//     new_deck[24][0] = 13;
+//     new_deck[24][1] = 0;
+// }
 
 void print_deck(int deck[][2], int deck_size) {
     int current_card;
@@ -106,13 +130,13 @@ char number_to_character_for_deck(int num) { //tranlator for the suits
 
 char number_to_suit(int num) { //tranlator for the values
     switch(num) {
-        case 0:
-            return 'H';
         case 1:
-            return 'D';
+            return 'H';
         case 2:
-            return 'C';
+            return 'D';
         case 3:
+            return 'C';
+        case 4:
             return 'S';
         default:
             return num;
@@ -323,7 +347,7 @@ void memory(int deck[52][2]) {
     int card_to_flip[2] = {-1, -1};
     int card_to_flip2[2] = {-1, -1};
     int memory_deck[25][2];
-    create_memory_deck(memory_deck);
+    // create_memory_deck(memory_deck);
     memory_print(memory_deck, card_to_flip, card_to_flip2);
     int row;
     int col;
@@ -368,18 +392,6 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]) {
         }
         printf("\n");
     }
-}
-
-void create_memory_deck(int new_deck[25][2]) {
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 12; j++) {
-            int current_iteration = (i*12) + j; //current iteration out of 24
-            new_deck[current_iteration][0] = (current_iteration % 12) + 1; 
-            new_deck[current_iteration][1] = i + 1;
-        }
-    }    
-    new_deck[24][0] = 13;
-    new_deck[24][1] = 0;
 }
 
 void print_memory_deck(int deck[25][2]) {
