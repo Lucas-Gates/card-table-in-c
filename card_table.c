@@ -4,7 +4,7 @@
 
 //function prototypes
 void create_deck(int new_deck[52][2], int is_normal_deck);
-void print_deck(int deck[][2], int deck_size);
+void print_deck(int deck[][2], int is_normal_deck);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
 void shuffle_deck(int deck[][2], int is_normal_deck);
@@ -16,9 +16,6 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]);
-// void create_memory_deck(int new_deck[25][2]);
-void print_memory_deck(int deck[25][2]);
-void shuffle_memory_deck(int deck[25][2]);
 
 int main() {
     srand(time(NULL));
@@ -57,16 +54,16 @@ int main() {
 
         int first_deck[amount_of_cards_in_deck][2];
         create_deck(first_deck, type_of_deck);
-        print_deck(first_deck, amount_of_cards_in_deck);
+        print_deck(first_deck, type_of_deck);
         shuffle_deck(first_deck, type_of_deck);
-        print_deck(first_deck, amount_of_cards_in_deck);
+        print_deck(first_deck, type_of_deck);
         if (game_selected == 1) {
             int turns = 1000;
             printf("What would you like the turn limit to be?\n");
             scanf("%d", &turns);
-            //war(first_deck, turns);
+            war(first_deck, turns);
         } else if (game_selected == 2) {
-            //memory(first_deck);
+            memory(first_deck);
         }
 
         printf("\n");
@@ -97,26 +94,32 @@ void create_deck(int new_deck[][2], int is_normal_deck) {
     }
 }
 
-// void create_memory_deck(int new_deck[25][2]) {
-//     for (int i = 0; i < 2; i++) {
-//         for (int j = 0; j < 12; j++) {
-//             int current_iteration = (i*12) + j; //current iteration out of 24
-//             new_deck[current_iteration][0] = (current_iteration % 12) + 1; 
-//             new_deck[current_iteration][1] = i + 1;
-//         }
-//     }    
-//     new_deck[24][0] = 13;
-//     new_deck[24][1] = 0;
-// }
-
-void print_deck(int deck[][2], int deck_size) {
+void print_deck(int deck[][2], int is_normal_deck) {
     int current_card;
-    for (int i = 0; i < deck_size; i++) { //looping through every card
+    int num_of_cards_in_deck;
+
+    if (is_normal_deck) {
+        num_of_cards_in_deck = 52;
+    } else {
+        num_of_cards_in_deck = 25;
+    }
+
+    for (int i = 0; i < num_of_cards_in_deck; i++) { //looping through every card
         current_card = deck[i][0];
-        if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
-            printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
+        if (is_normal_deck) {
+            if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
+                printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
+            } else {
+                printf("Card #%d: %d of %c\n", i + 1, deck[i][0], number_to_suit(deck[i][1]));
+            }
         } else {
-            printf("Card #%d: %d of %c\n", i + 1, deck[i][0], number_to_suit(deck[i][1]));
+            int num_of_cards_of_given_value = 2;
+
+            if (deck[i][0] == 13) {
+                num_of_cards_of_given_value = 1;
+            }
+
+            printf("Card #%d: %d (%d of %d)\n", i + 1, deck[i][0], deck[i][1], num_of_cards_of_given_value);
         }
     }
 }
@@ -406,35 +409,5 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]) {
             }
         }
         printf("\n");
-    }
-}
-
-void print_memory_deck(int deck[25][2]) {
-    int current_card;
-    for (int i = 0; i < 25; i++) { //looping through every card
-        current_card = deck[i][0];
-        if (current_card == 1 || current_card >= 11) { //if it's a ace, jack, queen, or king
-            printf("Card #%d: %c of %c\n", i + 1, number_to_character_for_deck(deck[i][0]), number_to_suit(deck[i][1])); //it's going to run it through the function translator
-        } else {
-            printf("Card #%d: %d of %c\n", i + 1, deck[i][0], number_to_suit(deck[i][1]));
-        }
-    }
-}
-
-void shuffle_memory_deck(int deck[25][2]) {
-    int copy_deck[52][2];
-    for (int i = 0; i < 52; i++) {
-        for (int j = 0; j < 2; j++) {
-            copy_deck[i][j] = deck[i][j]; //creating an exact copy of the deck array
-            deck[i][j] = -1; //filling the original deck array with only -1
-        }
-    }
-    int random_num = 0;
-    for (int k = 0; k < 52; k++) {
-        do {
-            random_num = rand() % 52;
-        } while (deck[random_num][0] != -1); //keeps looping until it finds a spot in the deck array filled with a -1
-        deck[random_num][0] = copy_deck[k][0];
-        deck[random_num][1] = copy_deck[k][1];
     }
 }
