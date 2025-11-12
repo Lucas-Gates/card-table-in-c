@@ -7,7 +7,7 @@ void create_deck(int new_deck[52][2], int is_normal_deck);
 void print_deck(int deck[][2], int deck_size);
 char number_to_character_for_deck(int num);
 char number_to_suit(int num);
-void shuffle_deck(int deck[52][2]);
+void shuffle_deck(int deck[][2], int is_normal_deck);
 void split_deck(int original_deck[52][2], int deck1[52][2], int deck2[52][2]);
 void move_cards_up_in_hand(int hand[52][2]);
 int add_cards_to_hand(int hand[52][2], int cards_to_add[][2], int amount_to_add);
@@ -25,6 +25,8 @@ int main() {
     printf("Welcome to the Card Table!\n");
     int choice;
     int game_selected = 0;
+    int type_of_deck;
+    int amount_of_cards_in_deck;
 
     while (1) {
         do {
@@ -36,9 +38,13 @@ int main() {
             switch(choice) {
                 case 1:
                     game_selected = 1;
+                    type_of_deck = 1;
+                    amount_of_cards_in_deck = 52;
                     break;
                 case 2:
                     game_selected = 2;
+                    type_of_deck = 0;
+                    amount_of_cards_in_deck = 25;
                     break;
                 case 0:
                     printf("Thanks for playing!\n");
@@ -49,25 +55,25 @@ int main() {
             }
         } while (!game_selected);
 
-        int first_deck[52][2];
-        create_deck(first_deck, 1);
-        print_deck(first_deck, 52);
-        shuffle_deck(first_deck);
-        print_deck(first_deck, 52);
+        int first_deck[amount_of_cards_in_deck][2];
+        create_deck(first_deck, type_of_deck);
+        print_deck(first_deck, amount_of_cards_in_deck);
+        shuffle_deck(first_deck, type_of_deck);
+        print_deck(first_deck, amount_of_cards_in_deck);
         if (game_selected == 1) {
             int turns = 1000;
             printf("What would you like the turn limit to be?\n");
             scanf("%d", &turns);
-            // war(first_deck, turns);
+            //war(first_deck, turns);
         } else if (game_selected == 2) {
-            // memory(first_deck);
+            //memory(first_deck);
         }
 
         printf("\n");
     }
 }
 
-void create_deck(int new_deck[][2], int is_normal_deck) { //new_deck is pointer to new_deck[0][0]
+void create_deck(int new_deck[][2], int is_normal_deck) {
     int suits[4] = {1, 2, 3, 4}; //hearts, diamonds, clubs, spades
     int num_of_suits;
     int num_of_unique_cards;
@@ -77,13 +83,15 @@ void create_deck(int new_deck[][2], int is_normal_deck) { //new_deck is pointer 
         num_of_unique_cards = 13;
     } else {
         num_of_suits = 2;
-        num_of_unique_cards = 12;        
+        num_of_unique_cards = 12;       
+        new_deck[24][0] = 13;
+        new_deck[24][1] = 1; 
     }
 
     for (int i = 0; i < num_of_suits; i++) {
         for (int j = 0; j < num_of_unique_cards; j++) {
             int current_iteration = (i*num_of_unique_cards) + j; //current iteration
-            new_deck[current_iteration][0] = (current_iteration % num_of_unique_cards) + 1; //only using numbers 1 through 13
+            new_deck[current_iteration][0] = (current_iteration % num_of_unique_cards) + 1; 
             new_deck[current_iteration][1] = suits[i];
         }
     }
@@ -143,18 +151,26 @@ char number_to_suit(int num) { //tranlator for the values
     }
 }
 
-void shuffle_deck(int deck[52][2]) {
-    int copy_deck[52][2];
-    for (int i = 0; i < 52; i++) {
+void shuffle_deck(int deck[][2], int is_normal_deck) {
+    int num_of_cards_in_deck;
+
+    if (is_normal_deck) {
+        num_of_cards_in_deck = 52;
+    } else {
+        num_of_cards_in_deck = 25;
+    }
+
+    int copy_deck[num_of_cards_in_deck][2];
+    for (int i = 0; i < num_of_cards_in_deck; i++) {
         for (int j = 0; j < 2; j++) {
             copy_deck[i][j] = deck[i][j]; //creating an exact copy of the deck array
             deck[i][j] = -1; //filling the original deck array with only -1
         }
     }
     int random_num = 0;
-    for (int k = 0; k < 52; k++) {
+    for (int k = 0; k < num_of_cards_in_deck; k++) {
         do {
-            random_num = rand() % 52;
+            random_num = rand() % num_of_cards_in_deck;
         } while (deck[random_num][0] != -1); //keeps looping until it finds a spot in the deck array filled with a -1
         deck[random_num][0] = copy_deck[k][0];
         deck[random_num][1] = copy_deck[k][1];
@@ -347,7 +363,6 @@ void memory(int deck[52][2]) {
     int card_to_flip[2] = {-1, -1};
     int card_to_flip2[2] = {-1, -1};
     int memory_deck[25][2];
-    // create_memory_deck(memory_deck);
     memory_print(memory_deck, card_to_flip, card_to_flip2);
     int row;
     int col;
