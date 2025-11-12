@@ -16,6 +16,7 @@ int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8]
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]);
+void initialize_matches_array(int matches[25]);
 
 int main() {
     srand(time(NULL));
@@ -54,9 +55,9 @@ int main() {
 
         int first_deck[amount_of_cards_in_deck][2];
         create_deck(first_deck, type_of_deck);
-        print_deck(first_deck, type_of_deck);
+        //print_deck(first_deck, type_of_deck); // (for debugging)
         shuffle_deck(first_deck, type_of_deck);
-        print_deck(first_deck, type_of_deck);
+        //print_deck(first_deck, type_of_deck); // (for debugging)
         if (game_selected == 1) {
             int turns = 1000;
             printf("What would you like the turn limit to be?\n");
@@ -361,16 +362,22 @@ void war(int deck[52][2], int max_turns) {
     printf("%s Wins War!\n", player_wins > opponent_wins ? "Player" : "Opponent");    
 }
 
-void memory(int deck[52][2]) {
+void memory(int deck[25][2]) {
     printf("Welcome to Memory!\n");
     int card_to_flip[2] = {-1, -1};
     int card_to_flip2[2] = {-1, -1};
-    int memory_deck[25][2];
-    memory_print(memory_deck, card_to_flip, card_to_flip2);
+    int rounds = 0;
     int row;
     int col;
+    int matches[25];
+    initialize_matches_array(matches);
+    
     while (1) {
+        rounds++;
+        printf("Round %d\n", rounds);
+
         for (int i = 0; i < 2; i++) {
+            memory_print(deck, card_to_flip, card_to_flip2);
             printf("Card #%d row?\n", i+1);
             scanf("%d", &row);
             printf("Card #%d column?\n", i+1);
@@ -382,7 +389,9 @@ void memory(int deck[52][2]) {
                 card_to_flip2[0] = row;
                 card_to_flip2[1] = col;
             }
-            memory_print(deck, card_to_flip, card_to_flip2);
+        }
+        if (card_to_flip[0] == card_to_flip2[0]) {
+            printf("You got a match!\n");
         }
     }
 }
@@ -409,5 +418,11 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2]) {
             }
         }
         printf("\n");
+    }
+}
+
+void initialize_matches_array(int matches[25]) {
+    for (int i = 0; i < 25; i++) {
+        matches[i] = -1;
     }
 }
