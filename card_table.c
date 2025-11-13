@@ -365,13 +365,14 @@ void war(int deck[52][2], int max_turns) {
 
 void memory(int deck[25][2]) {
     printf("Welcome to Memory!\n");
-    int card_to_flip[2];
-    int card_to_flip2[2];
+    int card_to_flip[2] = {-1, -1};
+    int card_to_flip2[2] = {-1, -1};
     int rounds = 0;
     int row;
     int col;
     int matches[25];
     initialize_matches_array(matches);
+    memory_print(deck, card_to_flip, card_to_flip2, matches);
 
     while (1) {
         rounds++;
@@ -382,7 +383,6 @@ void memory(int deck[25][2]) {
         printf("Round %d\n", rounds);
 
         for (int i = 0; i < 2; i++) {
-            memory_print(deck, card_to_flip, card_to_flip2, matches);
             printf("Card #%d row?\n", i+1);
             scanf("%d", &row);
             printf("Card #%d column?\n", i+1);
@@ -394,8 +394,9 @@ void memory(int deck[25][2]) {
                 card_to_flip2[0] = row;
                 card_to_flip2[1] = col;
             }
+            memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
-        if ((card_to_flip[0] == card_to_flip2[0]) && (card_to_flip[0] != 13)) {
+        if (compare_two_memory_positions(deck, card_to_flip, card_to_flip2)) {
             printf("You got a match!\n");
         }
     }
@@ -439,6 +440,8 @@ int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_po
     int card1_col = card1_pos[1] - 1;
     int card2_row = card2_pos[1] - 1;
     int card2_col = card2_pos[1] - 1;
+
+    printf("$Card 1 row: %d; Card 1 col: %d; Card 2 row: %d; Card 2 col: %d$\n", card1_row, card1_col, card2_row, card2_col);
 
     int card1_value = deck[(card1_row*5) + card1_col][0];
     int card2_value = deck[(card2_row*5) + card2_col][0];
