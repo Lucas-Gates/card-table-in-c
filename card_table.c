@@ -17,6 +17,7 @@ void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[25]);
 void initialize_matches_array(int matches[25]);
+int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]);
 
 int main() {
     srand(time(NULL));
@@ -431,4 +432,19 @@ void initialize_matches_array(int matches[25]) {
     for (int i = 0; i < 25; i++) {
         matches[i] = 0;
     }
+}
+
+int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]) {
+    int card1_row = card1_pos[0] - 1;
+    int card1_col = card1_pos[1] - 1;
+    int card2_row = card2_pos[1] - 1;
+    int card2_col = card2_pos[1] - 1;
+
+    int card1_value = deck[(card1_row*5) + card1_col][0];
+    int card2_value = deck[(card2_row*5) + card2_col][0];
+    
+    if (card1_value == card2_value) {
+        return 1;
+    }
+    return 0;
 }
