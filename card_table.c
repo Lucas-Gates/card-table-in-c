@@ -396,9 +396,15 @@ void memory(int deck[25][2]) {
             }
             memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
-        if (compare_two_memory_positions(deck, card_to_flip, card_to_flip2)) {
+        int match_card_value = compare_two_memory_positions(deck, card_to_flip, card_to_flip2);
+        if (match_card_value) {
             printf("You got a match!\n");
+            matches[match_card_value - 1] = 1;
         }
+        card_to_flip[0] = -1;
+        card_to_flip[1] = -1;
+        card_to_flip2[0] = -1;
+        card_to_flip2[1] = -1;
     }
 }
 
@@ -447,7 +453,7 @@ int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_po
     int card2_value = deck[(card2_row*5) + card2_col][0];
     
     if (card1_value == card2_value) {
-        return 1;
+        return card1_value;
     }
     return 0;
 }
