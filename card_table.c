@@ -423,9 +423,9 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
                 printf("C%d ", j+1);
             } else {
                 if (card_to_flip[0] == i && card_to_flip[1] == j + 1) {
-                    printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
+                    printf("%d%d ", deck[((i-1)*5) + (j-1)][0], deck[((i-1)*5) + (j-1)][1]);
                 } else if (card_to_flip2[0] == i && card_to_flip2[1] == j + 1) {
-                    printf("%d%d ", deck[(i*5) + j][0], deck[(i*5) + j][1]);
+                    printf("%d%d ", deck[((i-1)*5) + (j-1)][0], deck[((i-1)*5) + (j-1)][1]);
                 } else {
                     printf("[] ");
                 }
@@ -442,12 +442,10 @@ void initialize_matches_array(int matches[25]) {
 }
 
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]) {
-    int card1_row = card1_pos[0] - 1;
-    int card1_col = card1_pos[1] - 1;
-    int card2_row = card2_pos[1] - 1;
-    int card2_col = card2_pos[1] - 1;
-
-    printf("$Card 1 row: %d; Card 1 col: %d; Card 2 row: %d; Card 2 col: %d$\n", card1_row, card1_col, card2_row, card2_col);
+    int card1_row = card1_pos[0];
+    int card1_col = card1_pos[1];
+    int card2_row = card2_pos[0];
+    int card2_col = card2_pos[1];
 
     int card1_value = deck[(card1_row*5) + card1_col][0];
     int card2_value = deck[(card2_row*5) + card2_col][0];
