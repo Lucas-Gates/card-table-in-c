@@ -372,6 +372,7 @@ void memory(int deck[25][2]) {
     int col;
     int matches[25];
     initialize_matches_array(matches);
+    print_deck(deck, 0);
     memory_print(deck, card_to_flip, card_to_flip2, matches);
 
     while (1) {
@@ -397,6 +398,7 @@ void memory(int deck[25][2]) {
             memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
         int match_card_value = compare_two_memory_positions(deck, card_to_flip, card_to_flip2);
+        printf("Match card value: %d\n", match_card_value);
         if (match_card_value) {
             printf("You got a match!\n");
             matches[match_card_value - 1] = 1;
@@ -422,12 +424,14 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
 
                 printf("C%d ", j+1);
             } else {
+                int current_card = (((i-1)*5) + (j));
                 if (card_to_flip[0] == i && card_to_flip[1] == j + 1) {
-                    printf("%d%d ", deck[((i-1)*5) + (j-1)][0], deck[((i-1)*5) + (j-1)][1]);
+                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
                 } else if (card_to_flip2[0] == i && card_to_flip2[1] == j + 1) {
-                    printf("%d%d ", deck[((i-1)*5) + (j-1)][0], deck[((i-1)*5) + (j-1)][1]);
+                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
                 } else {
-                    printf("[] ");
+                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
+                    //printf("[] ");
                 }
             }
         }
@@ -442,13 +446,14 @@ void initialize_matches_array(int matches[25]) {
 }
 
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]) {
-    int card1_row = card1_pos[0];
-    int card1_col = card1_pos[1];
-    int card2_row = card2_pos[0];
-    int card2_col = card2_pos[1];
+    int card1_row = card1_pos[0] - 1;
+    int card1_col = card1_pos[1] - 1;
+    int card2_row = card2_pos[0] - 1;
+    int card2_col = card2_pos[1] - 1;
 
     int card1_value = deck[(card1_row*5) + card1_col][0];
     int card2_value = deck[(card2_row*5) + card2_col][0];
+    printf("Card 1 value: %d; Card 2 value: %d\n", card1_value, card2_value);
     
     if (card1_value == card2_value) {
         return card1_value;
