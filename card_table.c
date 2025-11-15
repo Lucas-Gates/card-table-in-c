@@ -15,8 +15,8 @@ int check_amount_of_cards(int hand[52][2]);
 int war_tie(int player_hand[52][2], int opponent_hand[52][2], int prize_cards[8][2]);
 void war(int deck[52][2], int max_turns);
 void memory(int deck[52][2]);
-void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[25]);
-void initialize_matches_array(int matches[25]);
+void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[5][5]);
+void initialize_matches_array(int matches[5][5]);
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]);
 
 int main() {
@@ -370,9 +370,9 @@ void memory(int deck[25][2]) {
     int rounds = 0;
     int row;
     int col;
-    int matches[25];
+    int matches[5][5];
     initialize_matches_array(matches);
-    print_deck(deck, 0);
+    //print_deck(deck, 0);
     memory_print(deck, card_to_flip, card_to_flip2, matches);
 
     while (1) {
@@ -398,19 +398,24 @@ void memory(int deck[25][2]) {
             memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
         int match_card_value = compare_two_memory_positions(deck, card_to_flip, card_to_flip2);
-        printf("Match card value: %d\n", match_card_value);
+        //printf("Match card value: %d\n", match_card_value);
         if (match_card_value) {
             printf("You got a match!\n");
-            matches[match_card_value - 1] = 1;
+            // printf("CTF1[0]: %d; CTF1[1]: %d; CTF2[0]: %d; CTF2[1]: %d\n", card_to_flip[0], card_to_flip[1], card_to_flip2[0], card_to_flip2[1]);
+            matches[card_to_flip[0]-1][card_to_flip[1]-1] = match_card_value;
+            matches[card_to_flip2[0]-1][card_to_flip2[1]-1] = match_card_value;
         }
-        card_to_flip[0] = -1;
-        card_to_flip[1] = -1;
-        card_to_flip2[0] = -1;
-        card_to_flip2[1] = -1;
+        // printf("Matches array:\n");
+        // for (int a = 0; a < 5; a++) {
+        //     for (int b = 0; b < 5; b++) {
+        //         printf("%d ", matches[a][b]);
+        //     }
+        //     printf("\n");
+        // }
     }
 }
 
-void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[25]) {
+void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[5][5]) {
     for (int i = 0; i < 6; i++) {
         if (i > 0) {
             printf("R%d ", i);
@@ -429,9 +434,11 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
                     printf("%d%d ", deck[current_card][0], deck[current_card][1]);
                 } else if (card_to_flip2[0] == i && card_to_flip2[1] == j + 1) {
                     printf("%d%d ", deck[current_card][0], deck[current_card][1]);
-                } else {
+                } else if (matches[i-1][j] > 0) {
                     printf("%d%d ", deck[current_card][0], deck[current_card][1]);
-                    //printf("[] ");
+                } else {
+                    //printf("%d%d ", deck[current_card][0], deck[current_card][1]);
+                    printf("[] ");
                 }
             }
         }
@@ -439,9 +446,11 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
     }
 }
 
-void initialize_matches_array(int matches[25]) {
-    for (int i = 0; i < 25; i++) {
-        matches[i] = 0;
+void initialize_matches_array(int matches[5][5]) {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            matches[i][j] = 0;
+        }
     }
 }
 
@@ -453,7 +462,7 @@ int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_po
 
     int card1_value = deck[(card1_row*5) + card1_col][0];
     int card2_value = deck[(card2_row*5) + card2_col][0];
-    printf("Card 1 value: %d; Card 2 value: %d\n", card1_value, card2_value);
+    //printf("Card 1 value: %d; Card 2 value: %d\n", card1_value, card2_value);
     
     if (card1_value == card2_value) {
         return card1_value;
