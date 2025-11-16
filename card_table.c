@@ -19,6 +19,7 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
 void initialize_matches_array(int matches[5][5]);
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]);
 int card_value_from_position(int deck[25][2], int card_pos[2]);
+int check_if_matches_is_filled(int matches[5][5]);
 
 int main() {
     srand(time(NULL));
@@ -375,7 +376,7 @@ void memory(int deck[25][2]) {
     int keep_playing = 1;
     int win = 0;
     initialize_matches_array(matches);
-    //print_deck(deck, 0);
+    print_deck(deck, 0);
     printf("\nWelcome to Memory!\n");
 
     while (keep_playing) {
@@ -405,13 +406,18 @@ void memory(int deck[25][2]) {
             if (i == 0) {
                 card_to_flip[0] = row;
                 card_to_flip[1] = col;
+                if ((card_value_from_position(deck, card_to_flip) == 13) && (check_if_matches_is_filled(matches))) {
+                    memory_print(deck, card_to_flip, card_to_flip2, matches);
+                    printf("You won in %d rounds!\n", rounds);
+                    return;
+                }
             } else {
                 card_to_flip2[0] = row;
                 card_to_flip2[1] = col;
             }
             memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
-        printf("Card 1's value: %d; Card 2's value: %d\n", card_value_from_position(deck, card_to_flip), card_value_from_position(deck, card_to_flip2));
+        //printf("Card 1's value: %d; Card 2's value: %d\n", card_value_from_position(deck, card_to_flip), card_value_from_position(deck, card_to_flip2));
         int match_card_value = compare_two_memory_positions(deck, card_to_flip, card_to_flip2);
         //printf("Match card value: %d\n", match_card_value);
         if (match_card_value) {
@@ -491,4 +497,21 @@ int card_value_from_position(int deck[25][2], int card_pos[2]) {
     int col = card_pos[1] - 1;
 
     return deck[(row*5) + col][0];
+}
+
+int check_if_matches_is_filled(int matches[5][5]) {
+    int spots_not_filled = 0;
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (matches[i][j] == 0) {
+                spots_not_filled++;
+            }
+        }
+    }
+
+    if (spots_not_filled == 1) {
+        return 1;
+    } 
+    return 0;
 }
