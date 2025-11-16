@@ -364,25 +364,26 @@ void war(int deck[52][2], int max_turns) {
 }
 
 void memory(int deck[25][2]) {
-    printf("Welcome to Memory!\n");
-    int card_to_flip[2] = {-1, -1};
-    int card_to_flip2[2] = {-1, -1};
+    int card_to_flip[2];
+    int card_to_flip2[2];
     int rounds = 0;
     int row;
     int col;
     int matches[5][5];
     int valid_card = 1;
+    int keep_playing = 1;
     initialize_matches_array(matches);
-    print_deck(deck, 0);
-    memory_print(deck, card_to_flip, card_to_flip2, matches);
+    //print_deck(deck, 0);
+    printf("\nWelcome to Memory!\n");
 
-    while (1) {
+    while (keep_playing) {
         rounds++;
         card_to_flip[0] = -1;
         card_to_flip[1] = -1;
         card_to_flip2[0] = -1;
         card_to_flip2[1] = -1;
-        printf("Round %d\n", rounds);
+        printf("----- Round %d -----\n", rounds);
+        memory_print(deck, card_to_flip, card_to_flip2, matches);
 
         for (int i = 0; i < 2; i++) {
             do {
@@ -415,6 +416,8 @@ void memory(int deck[25][2]) {
             // printf("CTF1[0]: %d; CTF1[1]: %d; CTF2[0]: %d; CTF2[1]: %d\n", card_to_flip[0], card_to_flip[1], card_to_flip2[0], card_to_flip2[1]);
             matches[card_to_flip[0]-1][card_to_flip[1]-1] = match_card_value;
             matches[card_to_flip2[0]-1][card_to_flip2[1]-1] = match_card_value;
+        } else {
+            printf("No match.\n");
         }
         // printf("Matches array:\n");
         // for (int a = 0; a < 5; a++) {
@@ -423,6 +426,11 @@ void memory(int deck[25][2]) {
         //     }
         //     printf("\n");
         // }
+        printf("Enter 1 to continue; enter 0 to quit: ");
+        scanf("%d", &keep_playing);
+        if (keep_playing) {
+            printf("\n");
+        }
     }
 }
 
