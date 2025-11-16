@@ -18,6 +18,7 @@ void memory(int deck[52][2]);
 void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], int matches[5][5]);
 void initialize_matches_array(int matches[5][5]);
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]);
+int card_value_from_position(int deck[25][2], int card_pos[2]);
 
 int main() {
     srand(time(NULL));
@@ -372,6 +373,7 @@ void memory(int deck[25][2]) {
     int matches[5][5];
     int valid_card = 1;
     int keep_playing = 1;
+    int win = 0;
     initialize_matches_array(matches);
     //print_deck(deck, 0);
     printf("\nWelcome to Memory!\n");
@@ -409,6 +411,7 @@ void memory(int deck[25][2]) {
             }
             memory_print(deck, card_to_flip, card_to_flip2, matches);
         }
+        printf("Card 1's value: %d; Card 2's value: %d\n", card_value_from_position(deck, card_to_flip), card_value_from_position(deck, card_to_flip2));
         int match_card_value = compare_two_memory_positions(deck, card_to_flip, card_to_flip2);
         //printf("Match card value: %d\n", match_card_value);
         if (match_card_value) {
@@ -487,4 +490,11 @@ int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_po
         return card1_value;
     }
     return 0;
+}
+
+int card_value_from_position(int deck[25][2], int card_pos[2]) {
+    int row = card_pos[0] - 1;
+    int col = card_pos[1] - 1;
+
+    return deck[(row*5) + col][0];
 }
