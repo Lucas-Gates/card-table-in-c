@@ -477,14 +477,8 @@ void initialize_matches_array(int matches[5][5]) {
 }
 
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]) {
-    int card1_row = card1_pos[0] - 1;
-    int card1_col = card1_pos[1] - 1;
-    int card2_row = card2_pos[0] - 1;
-    int card2_col = card2_pos[1] - 1;
-
-    int card1_value = deck[(card1_row*5) + card1_col][0];
-    int card2_value = deck[(card2_row*5) + card2_col][0];
-    //printf("Card 1 value: %d; Card 2 value: %d\n", card1_value, card2_value);
+    int card1_value = card_value_from_position(deck, card1_pos);
+    int card2_value = card_value_from_position(deck, card2_pos);
     
     if (card1_value == card2_value) {
         return card1_value;
