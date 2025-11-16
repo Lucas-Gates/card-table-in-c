@@ -371,6 +371,7 @@ void memory(int deck[25][2]) {
     int row;
     int col;
     int matches[5][5];
+    int valid_card = 1;
     initialize_matches_array(matches);
     //print_deck(deck, 0);
     memory_print(deck, card_to_flip, card_to_flip2, matches);
@@ -384,10 +385,20 @@ void memory(int deck[25][2]) {
         printf("Round %d\n", rounds);
 
         for (int i = 0; i < 2; i++) {
-            printf("Card #%d row?\n", i+1);
-            scanf("%d", &row);
-            printf("Card #%d column?\n", i+1);
-            scanf("%d", &col);
+            do {
+                printf("Card #%d row?\n", i+1);
+                scanf("%d", &row);
+                printf("Card #%d column?\n", i+1);
+                scanf("%d", &col);
+
+                if (((card_to_flip[0] == row) && (card_to_flip[1] == col)) || (matches[row-1][col-1] > 0) || (row > 5) || (row < 1) || (col > 5) || (col < 1)) {
+                    printf("Invalid card; try again.\n");
+                    valid_card = 0;
+                } else {
+                    valid_card = 1;
+                }
+            } while (!valid_card);
+
             if (i == 0) {
                 card_to_flip[0] = row;
                 card_to_flip[1] = col;
