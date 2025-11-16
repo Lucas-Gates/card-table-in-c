@@ -373,7 +373,7 @@ void memory(int deck[25][2]) {
     int matches[5][5];
     int valid_card = 1;
     initialize_matches_array(matches);
-    //print_deck(deck, 0);
+    print_deck(deck, 0);
     memory_print(deck, card_to_flip, card_to_flip2, matches);
 
     while (1) {
@@ -442,11 +442,11 @@ void memory_print(int deck[25][2], int card_to_flip[2], int card_to_flip2[2], in
             } else {
                 int current_card = (((i-1)*5) + (j));
                 if (card_to_flip[0] == i && card_to_flip[1] == j + 1) {
-                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
+                    printf("%s%d ", deck[current_card][0] < 10 ? "0" : "", deck[current_card][0]);
                 } else if (card_to_flip2[0] == i && card_to_flip2[1] == j + 1) {
-                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
+                    printf("%s%d ", deck[current_card][0] < 10 ? "0" : "", deck[current_card][0]);
                 } else if (matches[i-1][j] > 0) {
-                    printf("%d%d ", deck[current_card][0], deck[current_card][1]);
+                    printf("%s%d ", deck[current_card][0] < 10 ? "0" : "", deck[current_card][0]);
                 } else {
                     //printf("%d%d ", deck[current_card][0], deck[current_card][1]);
                     printf("[] ");
