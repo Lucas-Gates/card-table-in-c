@@ -20,6 +20,7 @@ void initialize_matches_array(int matches[5][5]);
 int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_pos[2]);
 int card_value_from_position(int deck[25][2], int card_pos[2]);
 int check_if_matches_is_filled(int matches[5][5]);
+void go_fish(int deck[52][2]);
 
 int main() {
     srand(time(NULL));
@@ -34,6 +35,7 @@ int main() {
             printf("What game do you want to play?\n");
             printf("[1] War\n");
             printf("[2] Memory\n");
+            printf("[3] Go Fish\n");
             printf("[0] Quit\n");
             scanf("%d", &choice);
             switch(choice) {
@@ -46,6 +48,11 @@ int main() {
                     game_selected = 2;
                     type_of_deck = 0;
                     amount_of_cards_in_deck = 25;
+                    break;
+                case 3:
+                    game_selected = 3;
+                    type_of_deck = 1;
+                    amount_of_cards_in_deck = 52;
                     break;
                 case 0:
                     printf("Thanks for playing!\n");
@@ -68,6 +75,8 @@ int main() {
             war(first_deck, turns);
         } else if (game_selected == 2) {
             memory(first_deck);
+        } else if (game_selected == 3) {
+            go_fish(first_deck);
         }
 
         printf("\n");
@@ -514,4 +523,9 @@ int check_if_matches_is_filled(int matches[5][5]) {
         return 1;
     } 
     return 0;
+}
+
+void go_fish(int deck[52][2]) {
+    printf("Welcome to Go Fish!\n");
+
 }
