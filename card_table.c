@@ -21,6 +21,7 @@ int compare_two_memory_positions(int deck[25][2], int card1_pos[2], int card2_po
 int card_value_from_position(int deck[25][2], int card_pos[2]);
 int check_if_matches_is_filled(int matches[5][5]);
 void go_fish(int deck[52][2]);
+void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
 
 int main() {
     srand(time(NULL));
@@ -528,4 +529,16 @@ int check_if_matches_is_filled(int matches[5][5]) {
 void go_fish(int deck[52][2]) {
     printf("Welcome to Go Fish!\n");
 
+}
+
+void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
+    for (int i = 0; i < num_of_cards; i++) {
+        new_hand[i][0] = deck[i][0];
+        new_hand[i][1] = deck[i][1];
+    }
+
+    for (int j = 0; j < 52 - num_of_cards; j++) {
+        new_hand[j][0] = -1;
+        new_hand[j][1] = -1;
+    }
 }
