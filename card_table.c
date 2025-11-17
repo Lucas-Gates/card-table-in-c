@@ -22,6 +22,8 @@ int card_value_from_position(int deck[25][2], int card_pos[2]);
 int check_if_matches_is_filled(int matches[5][5]);
 void go_fish(int deck[52][2]);
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
+void print_hand_as_list(int hand[52][2]);
+void initialize_hand(int new_hand[52][2]);
 
 int main() {
     srand(time(NULL));
@@ -528,17 +530,39 @@ int check_if_matches_is_filled(int matches[5][5]) {
 
 void go_fish(int deck[52][2]) {
     printf("Welcome to Go Fish!\n");
+    int player_hand[52][2];
+    int opponent_hand[52][2];
 
+    deal_cards(deck, player_hand, 7);
+    deal_cards(deck, opponent_hand, 7);
+
+    //print_deck(player_hand, 1);
+    //while (1) {
+        printf("Choose a card to ask for:\n");
+        print_hand_as_list(player_hand);
+    //}
 }
 
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
+    initialize_hand(new_hand);
     for (int i = 0; i < num_of_cards; i++) {
-        new_hand[i][0] = deck[i][0];
-        new_hand[i][1] = deck[i][1];
+        new_hand[i][0] = deck[0][0];
+        new_hand[i][1] = deck[0][1];
+        move_cards_up_in_hand(deck);
     }
+}
 
-    for (int j = 0; j < 52 - num_of_cards; j++) {
-        new_hand[j][0] = -1;
-        new_hand[j][1] = -1;
+void print_hand_as_list(int hand[52][2]) {
+    for (int i = 0; i < 52; i++) {
+        if (hand[i][0] != -1) {
+            printf("[%d] %d of %c\n", i+1, hand[i][0], number_to_suit(hand[i][1]));
+        }
+    }
+}
+
+void initialize_hand(int new_hand[52][2]) {
+    for (int i = 0; i < 52; i++) {
+        new_hand[i][0] = -1;
+        new_hand[i][1] = -1;
     }
 }
