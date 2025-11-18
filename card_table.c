@@ -23,8 +23,9 @@ int check_if_matches_is_filled(int matches[5][5]);
 void go_fish(int deck[52][2]);
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
 void print_hand_as_list(int hand[52][2]);
-void initialize_hand(int new_hand[52][2]);
+void initialize_hand(int new_hand[][2], int num_of_cards);
 void bubble_sort(int array_to_sort[], int size_of_array);
+int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][2]);
 
 int main() {
     srand(time(NULL));
@@ -547,7 +548,7 @@ void go_fish(int deck[52][2]) {
 }
 
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
-    initialize_hand(new_hand);
+    initialize_hand(new_hand, 52);
     for (int i = 0; i < num_of_cards; i++) {
         new_hand[i][0] = deck[0][0];
         new_hand[i][1] = deck[0][1];
@@ -593,8 +594,8 @@ void print_hand_as_list(int hand[52][2]) {
     printf("\n");
 }
 
-void initialize_hand(int new_hand[52][2]) {
-    for (int i = 0; i < 52; i++) {
+void initialize_hand(int new_hand[][2], int num_of_cards) {
+    for (int i = 0; i < num_of_cards; i++) {
         new_hand[i][0] = -1;
         new_hand[i][1] = -1;
     }
@@ -611,4 +612,8 @@ void bubble_sort(int array_to_sort[], int size_of_array) {
             }
         }
     }
+}
+
+int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][2]) {
+
 }
