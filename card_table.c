@@ -24,6 +24,7 @@ void go_fish(int deck[52][2]);
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
 void print_hand_as_list(int hand[52][2]);
 void initialize_hand(int new_hand[52][2]);
+void bubble_sort(int array_to_sort[], int size_of_array);
 
 int main() {
     srand(time(NULL));
@@ -532,6 +533,7 @@ void go_fish(int deck[52][2]) {
     printf("Welcome to Go Fish!\n");
     int player_hand[52][2];
     int opponent_hand[52][2];
+    int ask_choice;
 
     deal_cards(deck, player_hand, 7);
     deal_cards(deck, opponent_hand, 7);
@@ -540,6 +542,7 @@ void go_fish(int deck[52][2]) {
     //while (1) {
         printf("Choose a card to ask for:\n");
         print_hand_as_list(player_hand);
+        scanf("%d", &ask_choice);
     //}
 }
 
@@ -553,9 +556,33 @@ void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
 }
 
 void print_hand_as_list(int hand[52][2]) {
-    for (int i = 0; i < 52; i++) {
-        if (hand[i][0] != -1) {
-            printf("[%d] %d of %c\n", i+1, hand[i][0], number_to_suit(hand[i][1]));
+    int unique_cards[13];
+    int unique = 1;
+    int times_run = 0;
+    int size_of_unique_cards = 0;
+
+    for (int i = 0; i < 13; i++) {
+        unique_cards[i] = -1;
+    }
+
+    for (int j = 0; j < 52; j++) {
+        if (hand[j][0] != -1) {
+            unique = 1;
+            for (int k = 0; k < 13; k++) {
+                if (unique_cards[k] == hand[j][0]) {
+                    unique = 0;
+                }
+            }
+            if (unique) {
+                for (int l = 0; l < 13; l++) {
+                    if (unique_cards[l] == -1 && times_run == 0) {
+                        unique_cards[l] = hand[j][0];
+                        times_run++;
+                        size_of_unique_cards++;
+                    }
+                }
+                times_run = 0;
+            }
         }
     }
 }
@@ -564,5 +591,18 @@ void initialize_hand(int new_hand[52][2]) {
     for (int i = 0; i < 52; i++) {
         new_hand[i][0] = -1;
         new_hand[i][1] = -1;
+    }
+}
+
+void bubble_sort(int array_to_sort[], int size_of_array) {
+    int copy_array;
+    for (int i = 0; i < size_of_array; i++) {
+        for (int j = 0; j < size_of_array-1; j++) {
+            if (array_to_sort[j] > array_to_sort[j+1]) {
+                copy_array = array_to_sort[j];
+                array_to_sort[j] = array_to_sort[j+1];
+                array_to_sort[j+1] = copy_array;
+            }
+        }
     }
 }
