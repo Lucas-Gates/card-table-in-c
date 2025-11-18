@@ -390,7 +390,7 @@ void memory(int deck[25][2]) {
     int keep_playing = 1;
     int win = 0;
     initialize_matches_array(matches);
-    print_deck(deck, 0);
+    //print_deck(deck, 0);
     printf("\nWelcome to Memory!\n");
 
     while (keep_playing) {
@@ -399,7 +399,7 @@ void memory(int deck[25][2]) {
         card_to_flip[1] = -1;
         card_to_flip2[0] = -1;
         card_to_flip2[1] = -1;
-        printf("----- Round %d -----\n", rounds);
+        printf("---- Round %d ----\n", rounds);
         memory_print(deck, card_to_flip, card_to_flip2, matches);
 
         for (int i = 0; i < 2; i++) {
@@ -535,6 +535,8 @@ void go_fish(int deck[52][2]) {
     int player_hand[52][2];
     int opponent_hand[52][2];
     int ask_choice;
+    int cards_to_steal[3][2];
+    int num_of_cards_to_steal = 0;
 
     deal_cards(deck, player_hand, 7);
     deal_cards(deck, opponent_hand, 7);
@@ -544,6 +546,12 @@ void go_fish(int deck[52][2]) {
         printf("Choose a card to ask for:\n");
         print_hand_as_list(player_hand);
         scanf("%d", &ask_choice);
+        num_of_cards_to_steal = check_if_card_in_hand(player_hand, ask_choice, cards_to_steal);
+        if (num_of_cards_to_steal) {
+            add_cards_to_hand(player_hand, cards_to_steal, num_of_cards_to_steal);
+        } else {
+            printf("Go Fish!\n");
+        }
     //}
 }
 
@@ -602,13 +610,13 @@ void initialize_hand(int new_hand[][2], int num_of_cards) {
 }
 
 void bubble_sort(int array_to_sort[], int size_of_array) {
-    int copy_array;
+    int copy_value;
     for (int i = 0; i < size_of_array; i++) {
         for (int j = 0; j < size_of_array-1; j++) {
             if (array_to_sort[j] > array_to_sort[j+1]) {
-                copy_array = array_to_sort[j];
+                copy_value = array_to_sort[j];
                 array_to_sort[j] = array_to_sort[j+1];
-                array_to_sort[j+1] = copy_array;
+                array_to_sort[j+1] = copy_value;
             }
         }
     }
