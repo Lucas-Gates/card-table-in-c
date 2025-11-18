@@ -585,6 +585,12 @@ void print_hand_as_list(int hand[52][2]) {
             }
         }
     }
+
+    bubble_sort(unique_cards, size_of_unique_cards);
+    for (int m = 0; m < size_of_unique_cards; m++) {
+        printf("%d ", unique_cards[m]);
+    }
+    printf("\n");
 }
 
 void initialize_hand(int new_hand[52][2]) {
