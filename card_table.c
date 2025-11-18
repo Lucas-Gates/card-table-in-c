@@ -615,5 +615,16 @@ void bubble_sort(int array_to_sort[], int size_of_array) {
 }
 
 int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][2]) {
+    initialize_hand(cards_in_hand, 3);
+    int amount_of_same_cards = 0;
 
+    for (int i = 0; i < 52; i++) {
+        if (hand[i][0] == card_value) {
+            cards_in_hand[amount_of_same_cards][0] = card_value;
+            cards_in_hand[amount_of_same_cards][1] = hand[i][1];
+            amount_of_same_cards++;
+        }
+    }
+
+    return amount_of_same_cards;
 }
