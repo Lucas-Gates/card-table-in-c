@@ -551,6 +551,9 @@ void go_fish(int deck[52][2]) {
             add_cards_to_hand(player_hand, cards_to_steal, num_of_cards_to_steal);
         } else {
             printf("Go Fish!\n");
+            int card_to_add[1][2] = {deck[0][0], deck[0][1]};
+            add_cards_to_hand(player_hand, card_to_add, 1);
+            move_cards_up_in_hand(deck);
         }
     //}
 }
