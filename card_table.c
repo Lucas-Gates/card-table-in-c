@@ -537,25 +537,46 @@ void go_fish(int deck[52][2]) {
     int ask_choice;
     int cards_to_steal[3][2];
     int num_of_cards_to_steal = 0;
+    int current_player = 0;
 
     deal_cards(deck, player_hand, 7);
     deal_cards(deck, opponent_hand, 7);
 
     //print_deck(player_hand, 1);
-    //while (1) {
-        printf("Choose a card to ask for:\n");
-        print_hand_as_list(player_hand);
-        scanf("%d", &ask_choice);
-        num_of_cards_to_steal = check_if_card_in_hand(player_hand, ask_choice, cards_to_steal);
-        if (num_of_cards_to_steal) {
-            add_cards_to_hand(player_hand, cards_to_steal, num_of_cards_to_steal);
-        } else {
-            printf("Go Fish!\n");
-            int card_to_add[1][2] = {deck[0][0], deck[0][1]};
-            add_cards_to_hand(player_hand, card_to_add, 1);
-            move_cards_up_in_hand(deck);
+    while (1) {
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                printf("-Player's Turn-\n");
+                printf("Choose a card to ask for:\n");
+                print_hand_as_list(player_hand);
+                scanf("%d", &ask_choice);
+                num_of_cards_to_steal = check_if_card_in_hand(player_hand, ask_choice, cards_to_steal);
+                if (num_of_cards_to_steal) {
+                    add_cards_to_hand(player_hand, cards_to_steal, num_of_cards_to_steal);
+                } else {
+                    printf("Go Fish!\n");
+                    int card_to_add[1][2] = {deck[0][0], deck[0][1]};
+                    add_cards_to_hand(player_hand, card_to_add, 1);
+                    move_cards_up_in_hand(deck);
+                }
+            } else {
+                printf("-Opponent's Turn-\n");
+                printf("Choose a card to ask for:\n");
+                print_hand_as_list(opponent_hand);
+                scanf("%d", &ask_choice);
+                num_of_cards_to_steal = check_if_card_in_hand(opponent_hand, ask_choice, cards_to_steal);
+                if (num_of_cards_to_steal) {
+                    add_cards_to_hand(opponent_hand, cards_to_steal, num_of_cards_to_steal);
+                } else {
+                    printf("Go Fish!\n");
+                    int card_to_add[1][2] = {deck[0][0], deck[0][1]};
+                    add_cards_to_hand(opponent_hand, card_to_add, 1);
+                    move_cards_up_in_hand(deck);
+                } 
+            }
+
         }
-    //}
+    }
 }
 
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
