@@ -595,6 +595,7 @@ void print_hand_as_list(int hand[52][2]) {
     int unique = 1;
     int times_run = 0;
     int size_of_unique_cards = 0;
+    int suits[4] = {-1, -1, -1, -1};
 
     for (int i = 0; i < 13; i++) {
         unique_cards[i][0] = -1;
@@ -627,6 +628,17 @@ void print_hand_as_list(int hand[52][2]) {
     bubble_sort(unique_cards, size_of_unique_cards);
     for (int m = 0; m < size_of_unique_cards; m++) {
         printf("%d (%s%s%s%s)\n", unique_cards[m], unique_cards);
+        for (int n = 0; n < unique_cards[m][1]; n++) {
+            for (int o = 0; o < 52; o++) {
+                if (hand[o][0] == unique_cards[m][0]) {
+                    suits[n] = hand[o][1];
+                }
+            }
+            printf("%s", unique_cards);
+        }
+        for (int p = 0; p < 4; p++) {
+            suits[p] = -1;
+        }
     }
     printf("\n");
 }
