@@ -24,7 +24,7 @@ void go_fish(int deck[52][2]);
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
 void print_hand_as_list(int hand[52][2]);
 void initialize_hand(int new_hand[][2], int num_of_cards);
-void bubble_sort(int array_to_sort[], int size_of_array);
+void bubble_sort(int array_to_sort[][2], int size_of_array);
 int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][2]);
 
 int main() {
@@ -591,27 +591,30 @@ void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards) {
 }
 
 void print_hand_as_list(int hand[52][2]) {
-    int unique_cards[13];
+    int unique_cards[13][2];
     int unique = 1;
     int times_run = 0;
     int size_of_unique_cards = 0;
 
     for (int i = 0; i < 13; i++) {
-        unique_cards[i] = -1;
+        unique_cards[i][0] = -1;
+        unique_cards[i][1] = -1;
     }
 
     for (int j = 0; j < 52; j++) {
         if (hand[j][0] != -1) {
             unique = 1;
             for (int k = 0; k < 13; k++) {
-                if (unique_cards[k] == hand[j][0]) {
+                if (unique_cards[k][0] == hand[j][0]) {
                     unique = 0;
+                    unique_cards[k][1]++;
                 }
             }
             if (unique) {
                 for (int l = 0; l < 13; l++) {
-                    if (unique_cards[l] == -1 && times_run == 0) {
-                        unique_cards[l] = hand[j][0];
+                    if (unique_cards[l][0] == -1 && times_run == 0) {
+                        unique_cards[l][0] = hand[j][0];
+                        unique_cards[l][1] = 0;
                         times_run++;
                         size_of_unique_cards++;
                     }
@@ -623,7 +626,7 @@ void print_hand_as_list(int hand[52][2]) {
 
     bubble_sort(unique_cards, size_of_unique_cards);
     for (int m = 0; m < size_of_unique_cards; m++) {
-        printf("%d ", unique_cards[m]);
+        printf("%d (%s%s%s%s)\n", unique_cards[m], unique_cards);
     }
     printf("\n");
 }
@@ -635,14 +638,18 @@ void initialize_hand(int new_hand[][2], int num_of_cards) {
     }
 }
 
-void bubble_sort(int array_to_sort[], int size_of_array) {
-    int copy_value;
+void bubble_sort(int array_to_sort[][2], int size_of_array) {
+    int copy_value1;
+    int copy_value2;
     for (int i = 0; i < size_of_array; i++) {
         for (int j = 0; j < size_of_array-1; j++) {
-            if (array_to_sort[j] > array_to_sort[j+1]) {
-                copy_value = array_to_sort[j];
-                array_to_sort[j] = array_to_sort[j+1];
-                array_to_sort[j+1] = copy_value;
+            if (array_to_sort[j][0] > array_to_sort[j+1][0]) {
+                copy_value1 = array_to_sort[j][0];
+                copy_value2 = array_to_sort[j][1];
+                array_to_sort[j][0] = array_to_sort[j+1][0];
+                array_to_sort[j][1] = array_to_sort[j+1][1];
+                array_to_sort[j+1][0] = copy_value1;
+                array_to_sort[j+1][1] = copy_value2;
             }
         }
     }
