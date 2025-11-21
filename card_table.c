@@ -550,7 +550,8 @@ void go_fish(int deck[52][2]) {
                 printf("Choose a card to ask for:\n");
                 print_hand_as_list(player_hand);
                 scanf("%d", &ask_choice);
-                num_of_cards_to_steal = check_if_card_in_hand(player_hand, ask_choice, cards_to_steal);
+                num_of_cards_to_steal = check_if_card_in_hand(opponent_hand, ask_choice, cards_to_steal);
+                //printf("num_of_cards_to_steal: %d\n", num_of_cards_to_steal);
                 if (num_of_cards_to_steal) {
                     add_cards_to_hand(player_hand, cards_to_steal, num_of_cards_to_steal);
                 } else {
@@ -561,10 +562,11 @@ void go_fish(int deck[52][2]) {
                 }
             } else {
                 printf("-Opponent's Turn-\n");
-                printf("Choose a card to ask for:\n");
+                //printf("Choose a card to ask for:\n");
                 print_hand_as_list(opponent_hand);
                 scanf("%d", &ask_choice);
-                num_of_cards_to_steal = check_if_card_in_hand(opponent_hand, ask_choice, cards_to_steal);
+                num_of_cards_to_steal = check_if_card_in_hand(player_hand, ask_choice, cards_to_steal);
+                printf("num_of_cards_to_steal: %d\n", num_of_cards_to_steal);
                 if (num_of_cards_to_steal) {
                     add_cards_to_hand(opponent_hand, cards_to_steal, num_of_cards_to_steal);
                 } else {
