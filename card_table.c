@@ -24,8 +24,9 @@ void go_fish(int deck[52][2]);
 void deal_cards(int deck[52][2], int new_hand[52][2], int num_of_cards);
 void print_hand_as_list(int hand[52][2]);
 void initialize_hand(int new_hand[][2], int num_of_cards);
-void bubble_sort(int array_to_sort[][2], int size_of_array);
+void bubble_sort_for_matrix(int array_to_sort[][2], int size_of_array);
 int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][2]);
+void bubble_sort_for_arrays(int array_to_sort[], int size_of_array);
 
 int main() {
     srand(time(NULL));
@@ -625,16 +626,18 @@ void print_hand_as_list(int hand[52][2]) {
         }
     }
 
-    bubble_sort(unique_cards, size_of_unique_cards);
+    times_run = 0;
+    bubble_sort_for_matrix(unique_cards, size_of_unique_cards);
     for (int m = 0; m < size_of_unique_cards; m++) {
-        printf("%d (%s%s%s%s)\n", unique_cards[m], unique_cards);
+        //printf("%d (%s%s%s%s)\n", unique_cards[m]);
         for (int n = 0; n < unique_cards[m][1]; n++) {
             for (int o = 0; o < 52; o++) {
-                if (hand[o][0] == unique_cards[m][0]) {
+                if ((hand[o][0] == unique_cards[m][0]) && (times_run == 0)) {
                     suits[n] = hand[o][1];
+                    times_run++;
                 }
             }
-            printf("%s", unique_cards);
+            
         }
         for (int p = 0; p < 4; p++) {
             suits[p] = -1;
@@ -650,7 +653,7 @@ void initialize_hand(int new_hand[][2], int num_of_cards) {
     }
 }
 
-void bubble_sort(int array_to_sort[][2], int size_of_array) {
+void bubble_sort_for_matrix(int array_to_sort[][2], int size_of_array) {
     int copy_value1;
     int copy_value2;
     for (int i = 0; i < size_of_array; i++) {
@@ -680,4 +683,17 @@ int check_if_card_in_hand(int hand[52][2], int card_value, int cards_in_hand[3][
     }
 
     return amount_of_same_cards;
+}
+
+void bubble_sort_for_arrays(int array_to_sort[], int size_of_array) {
+    int copy_array;
+    for (int i = 0; i < size_of_array; i++) {
+        for (int j = 0; j < size_of_array-1; j++) {
+            if (array_to_sort[j] > array_to_sort[j+1]) {
+                copy_array = array_to_sort[j];
+                array_to_sort[j] = array_to_sort[j+1];
+                array_to_sort[j+1] = copy_array;
+            }
+        }
+    }
 }
