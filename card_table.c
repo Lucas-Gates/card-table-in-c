@@ -639,6 +639,8 @@ void print_hand_as_list(int hand[52][2]) {
             }
             
         }
+        bubble_sort_for_arrays(suits, 4);
+        
         for (int p = 0; p < 4; p++) {
             suits[p] = -1;
         }
